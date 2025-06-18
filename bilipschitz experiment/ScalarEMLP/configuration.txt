@@ -1,0 +1,5 @@
+git clone https://github.com/weichiyao/ScalarEMLP.git 
+cd ScalarEMLP 
+pip install -e .
+pip install git+https://github.com/mfinzi/olive-oil-ml
+
