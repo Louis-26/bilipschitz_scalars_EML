@@ -1,4 +1,3 @@
-
 import numpy as np
 from scipy.linalg import expm
 from scalaremlp.utils import Named,export
