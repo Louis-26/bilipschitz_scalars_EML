@@ -17,7 +17,8 @@ def makeTrainerScalars(
     seed=2021,
     bs=512,
     epoch_samples=4096,
-    device='cuda',
+    # device='cuda',
+    device='cpu',
     split={'train':-1,'val':1000,'test':1000},
     trainer_config={
         'log_dir':"/home/",
