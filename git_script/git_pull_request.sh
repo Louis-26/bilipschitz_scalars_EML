@@ -1,3 +1,4 @@
+# first to remote, then need git fetch to local
 read -p "Enter the name of your feature branch that you pull request from: " BRANCH_NAME_FROM
 
 read -p "Enter the name of your feature branch that you pull request to: " BRANCH_NAME_TO
