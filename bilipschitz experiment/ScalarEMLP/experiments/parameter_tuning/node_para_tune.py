@@ -31,8 +31,8 @@ if __name__ == '__main__':
         print(f"Running with parameters: layers={layer_num}, hidden_layers={hidden_layer_num}, lr={lr}")
         Trial = odeScalars_trial(makeTrainerScalars)
         # print(makeTrainerScalars.__kwdefaults__)
-        makeTrainerScalars.__kwdefaults__['n_layers'] = layer_num
-        makeTrainerScalars.__kwdefaults__['n_hidden'] = hidden_layer_num
-        makeTrainerScalars.__kwdefaults__['lr'] = lr
+        makeTrainerScalars.__kwdefaults__["net_config"]["n_layers"] = layer_num
+        makeTrainerScalars.__kwdefaults__["net_config"]["n_hidden"] = hidden_layer_num
+        makeTrainerScalars.__kwdefaults__["lr"] = lr
         cfg, outcome = Trial(argupdated_config(makeTrainerScalars.__kwdefaults__))
         print(cfg,outcome)
