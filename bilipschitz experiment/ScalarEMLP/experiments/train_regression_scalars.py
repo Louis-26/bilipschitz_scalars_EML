@@ -17,8 +17,8 @@ def makeTrainerScalars(
     seed=2021,
     bs=512,
     epoch_samples=4096,
-    # device='cuda',
-    device='cpu',
+    device='cuda',
+    # device='cpu',
     split={'train':-1,'val':1000,'test':1000},
     trainer_config={
         'log_dir':"/home/",
@@ -36,7 +36,7 @@ def makeTrainerScalars(
     permutation=False,
     progress_bar=True
 ):
-     
+    device="cuda" if torch.cuda.is_available() else "cpu"
     # Prep the datasets splits, model, and dataloaders
     with FixedNumpySeed(seed),FixedPytorchSeed(seed):
         base_dataset = dataset(ndata)
@@ -45,7 +45,10 @@ def makeTrainerScalars(
             base_dataset
         ) 
         datasets = split_dataset(base_trans['dataset'], splits=split)
-     
+    
+    if device=="cpu":
+        trainer_config['num_gpus'] = 0
+        trainer_config["accelerator"] = "cpu"
     device = torch.device(device)
     # kwargs_gpu = {"num_workers": 1, "pin_memory": True} if device=='cuda' else {}
     print(f"Using {device}, number of gpus is {trainer_config['num_gpus']}.")

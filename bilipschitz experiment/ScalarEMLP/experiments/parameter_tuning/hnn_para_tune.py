@@ -28,8 +28,15 @@ levels = {'critical': logging.CRITICAL, 'error': logging.ERROR,
 
 if __name__ == '__main__':
     parameter_comb = list(itertools.product(layer_num_li, hidden_layer_num_li, lr_li))
+    already_run=[
+        (3, 100, 0.01), (3, 100, 5e-3), (3, 100, 3e-3),
+        (3, 150, 0.01)
+    ]
     for parameter in parameter_comb:
         layer_num, hidden_layer_num, lr = parameter
+        if parameter in already_run:
+            print(f"Skipping already run parameters: layers={layer_num}, hidden_layers={hidden_layer_num}, lr={lr}")
+            continue
         print(f"Running with parameters: layers={layer_num}, hidden_layers={hidden_layer_num}, lr={lr}")
         Trial = hnnScalars_trial(makeTrainerScalars)
 
@@ -44,7 +51,12 @@ if __name__ == '__main__':
         makeTrainerScalars.__kwdefaults__["net_config"]["n_hidden"] = hidden_layer_num
         makeTrainerScalars.__kwdefaults__["lr"] = lr
 
+        # for test purpose
+        makeTrainerScalars.__kwdefaults__["num_epochs"]=1
+
         # cfg, outcome = Trial(argupdated_config(kw))
         cfg, outcome = Trial(argupdated_config(makeTrainerScalars.__kwdefaults__))
 
-        # print(cfg,outcome)
+        print("cfg:", cfg)
+        print("outcome:",outcome)
+        print(type(outcome))
