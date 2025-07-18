@@ -15,6 +15,7 @@ class Solver:
 
 if __name__ == '__main__':
     solver = Solver()
+    a=1
     while True:
         a = int(input("a: "))
         b = int(input("b: "))

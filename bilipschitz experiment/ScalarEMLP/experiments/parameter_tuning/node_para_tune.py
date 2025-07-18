@@ -34,5 +34,9 @@ if __name__ == '__main__':
         makeTrainerScalars.__kwdefaults__["net_config"]["n_layers"] = layer_num
         makeTrainerScalars.__kwdefaults__["net_config"]["n_hidden"] = hidden_layer_num
         makeTrainerScalars.__kwdefaults__["lr"] = lr
-        cfg, outcome = Trial(argupdated_config(makeTrainerScalars.__kwdefaults__))
+        # cfg, outcome = Trial(argupdated_config(makeTrainerScalars.__kwdefaults__))
+        print(makeTrainerScalars.__kwdefaults__)
+        cfg, outcome = Trial(makeTrainerScalars.__kwdefaults__)
+
+
         print(cfg,outcome)

@@ -55,7 +55,12 @@ if __name__ == '__main__':
         makeTrainerScalars.__kwdefaults__["num_epochs"]=1
 
         # cfg, outcome = Trial(argupdated_config(kw))
-        cfg, outcome = Trial(argupdated_config(makeTrainerScalars.__kwdefaults__))
+        # cfg, outcome = Trial(argupdated_config(makeTrainerScalars.__kwdefaults__))
+        a=argupdated_config(makeTrainerScalars.__kwdefaults__)
+        b=makeTrainerScalars.__kwdefaults__.copy()
+        b["save"] = False
+        # cfg, outcome = Trial(makeTrainerScalars.__kwdefaults__)
+        cfg, outcome = Trial(b)
 
         print("cfg:", cfg)
         print("outcome:",outcome)
