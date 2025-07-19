@@ -3,7 +3,7 @@ import sys, os
 if os.path.abspath(os.path.join(os.getcwd(), "..")) not in sys.path:
     sys.path.append(os.path.abspath(os.path.join(os.getcwd(), "..")))
 
-from scalaremlp.nn import InvarianceLayer_objax
+from scalaremlp.nn.objax import InvarianceLayer_objax
 from trainer.hamiltonian_dynamics import IntegratedDynamicsTrainer, DoubleSpringPendulum, hnnScalars_trial
 from torch.utils.data import DataLoader
 from oil.utils.utils import FixedNumpySeed, FixedPytorchSeed
