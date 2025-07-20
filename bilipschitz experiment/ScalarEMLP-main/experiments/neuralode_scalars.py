@@ -1,6 +1,4 @@
-# from scalaremlp.nn import EquivarianceLayer_objax,compute_scalars,radial_basis_transform
-# modification
-from scalaremlp.nn.objax import EquivarianceLayer_objax,compute_scalars,radial_basis_transform
+from scalaremlp.nn import EquivarianceLayer_objax,compute_scalars,radial_basis_transform
 from trainer.hamiltonian_dynamics import IntegratedODETrainer,DoubleSpringPendulum,odeScalars_trial
 from torch.utils.data import DataLoader
 from oil.utils.utils import FixedNumpySeed,FixedPytorchSeed
@@ -20,8 +18,8 @@ def makeTrainerScalars(*,dataset=DoubleSpringPendulum,num_epochs=2000,ndata=5000
                 n_rad=200,bs=500,lr=5e-3,device='cuda',split={'train':500,'val':.1,'test':.1},
                 data_config={'chunk_len':5,'dt':0.2,'integration_time':30,'regen':False},
                 net_config={'n_layers':3,'n_hidden':100},log_level='warn',
-                trainer_config={'log_dir':"./neuralode_scalar_results",'log_args':{'minPeriod':.02,'timeFrac':.75},}, 
-                save=False,trial=1):
+                trainer_config={'log_dir':None,'log_args':{'minPeriod':.02,'timeFrac':.75},}, 
+                save=True,trial=1):
 
     logging.getLogger().setLevel(levels[log_level])
     # Prep the datasets splits, model, and dataloaders
@@ -50,6 +48,11 @@ def makeTrainerScalars(*,dataset=DoubleSpringPendulum,num_epochs=2000,ndata=5000
 
 if __name__ == "__main__":
     Trial = odeScalars_trial(makeTrainerScalars)
-    makeTrainerScalars.__kwdefaults__['num_epochs'] = 10  # for test purpose
+    print("before:",argupdated_config(makeTrainerScalars.__kwdefaults__))
+    # makeTrainerScalars.__kwdefaults__['num_epochs'] = 1  # for test purpose
+    # makeTrainerScalars.__kwdefaults__['save'] = False  # for test purpose
+    makeTrainerScalars.__kwdefaults__['trainer_config']["log_dir"] = "./neuralode_results"  # for test purpose
+    print("after:",argupdated_config(makeTrainerScalars.__kwdefaults__))
     cfg,outcome = Trial(argupdated_config(makeTrainerScalars.__kwdefaults__))
     print(outcome)
+

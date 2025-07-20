@@ -26,6 +26,7 @@ def densify(x):
         raise NotImplementedError
 
 
+# Identity Operator
 class I(LinearOperator):
     def __init__(self, d):
         shape = (d, d)

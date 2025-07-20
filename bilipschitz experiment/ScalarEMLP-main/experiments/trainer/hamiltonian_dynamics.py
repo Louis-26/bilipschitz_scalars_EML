@@ -14,7 +14,7 @@ from functools import partial
 
 from scalaremlp.groups import SO2eR3,O2eR3,DkeR3,Trivial
 from scalaremlp.reps import T,Scalar
-from .classifier import Regressor,Classifier
+from .classifier import Regressor,Classifier 
 
 ## Code to rollout a Hamiltonian system
 
@@ -79,11 +79,11 @@ class HamiltonianDataset(Dataset):
     def __init__(self,n_systems=100,chunk_len=5,dt=0.2,integration_time=30,regen=False):
         super().__init__()
         # root_dir = os.path.expanduser(f"~/datasets/ODEDynamics/{self.__class__}/")
-        root_dir = os.path.expanduser(f"~\\datasets\\ODEDynamics\\{self.__class__.__name__}")
+        root_dir = os.path.expanduser(f"~\\datasets\\ODEDynamics\\{self.__class__.__name__}/")
         filename = os.path.join(root_dir, f"trajectories_{n_systems}_{chunk_len}_{dt}_{integration_time}.pz")
 
         if os.path.exists(filename) and not regen:
-            Zs = torch.load(filename, weights_only=False)
+            Zs = torch.load(filename,weights_only=False)
         else:
             zs = self.generate_trajectory_data(n_systems, dt, integration_time)
             Zs = np.asarray(self.chunk_training_data(zs, chunk_len))
@@ -473,8 +473,11 @@ class odeScalars_trial(object):
     def __init__(self,make_trainer,strict=True):
         self.make_trainer = make_trainer
         self.strict=strict
+        print(self.make_trainer)
     def __call__(self,cfg):
         try:
+            print("cfg when call the function:",cfg)
+            print("save or not:", cfg["save"])
             cfg.pop('local_rank',None) #TODO: properly handle distributed
             resume = cfg.pop('resume',False)
             save = cfg.pop('save',False)
@@ -484,7 +487,8 @@ class odeScalars_trial(object):
             trainer = self.make_trainer(**cfg)
             trainer.logger.add_scalars('config',flatten_dict(cfg))
             trainer.train(cfg['num_epochs'])
-            if save: cfg['saved_at']=trainer.save_checkpoint()
+            if save:
+                cfg['saved_at']=trainer.save_checkpoint()
             outcome = trainer.ckpt['outcome']
             trajectories = []
             for mb in trainer.dataloaders['test']:
@@ -521,8 +525,7 @@ class hnnScalars_trial(object):
             trajectories = []
             for mb in trainer.dataloaders['test']:
                 trajectories.append(pred_and_gt(trainer.dataloaders['test'].dataset,trainer.model,mb))
-            print(f"{cfg['trainer_config']['log_dir']}/{'scalars_HNNs'}_{i}.t")
-            torch.save(np.concatenate(trajectories), f"{cfg['trainer_config']['log_dir']}/{'scalars_HNNs'}_{i}.t")
+            torch.save(np.concatenate(trajectories),f"{cfg['trainer_config']['log_dir']}/{'scalars_HNNs'}_{i}.t")
         except Exception as e:
             if self.strict: raise
             outcome = e

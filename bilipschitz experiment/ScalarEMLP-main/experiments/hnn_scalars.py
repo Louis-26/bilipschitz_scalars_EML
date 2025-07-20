@@ -1,4 +1,4 @@
-from scalaremlp.nn.objax import InvarianceLayer_objax
+from scalaremlp.nn import InvarianceLayer_objax
 from trainer.hamiltonian_dynamics import IntegratedDynamicsTrainer,DoubleSpringPendulum,hnnScalars_trial
 from torch.utils.data import DataLoader
 from oil.utils.utils import FixedNumpySeed,FixedPytorchSeed
@@ -17,11 +17,11 @@ levels = {'critical': logging.CRITICAL,'error': logging.ERROR,
           'info': logging.INFO,'debug': logging.DEBUG}
 
 
-def makeTrainerScalars(*,dataset=DoubleSpringPendulum,num_epochs=2000,ndata=5000,seed=2021,
+def makeTrainerScalars(*,dataset=DoubleSpringPendulum,num_epochs=2000,ndata=5000,seed=2021, 
                        n_rad=200,bs=500,lr=5e-3,device='cuda',split={'train':500,'val':.1,'test':.1},
                        data_config={'chunk_len':5,'dt':0.2,'integration_time':30,'regen':False},
                        net_config={'n_layers':3,'n_hidden':100}, log_level='info',
-                       trainer_config={'log_dir':'./hnn_results/','log_args':{'minPeriod':.02,'timeFrac':.75},},
+                       trainer_config={'log_dir':'/home/','log_args':{'minPeriod':.02,'timeFrac':.75},},
                        save=False,trial=1):
     logging.getLogger().setLevel(levels[log_level])
     # Prep the datasets splits, model, and dataloaders
@@ -42,5 +42,5 @@ def makeTrainerScalars(*,dataset=DoubleSpringPendulum,num_epochs=2000,ndata=5000
 if __name__ == "__main__":
     Trial = hnnScalars_trial(makeTrainerScalars)
     cfg,outcome = Trial(argupdated_config(makeTrainerScalars.__kwdefaults__))
-    # print(outcome)
+    print(outcome)
 
