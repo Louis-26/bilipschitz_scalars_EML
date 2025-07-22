@@ -3,17 +3,17 @@ import sys, os
 #     sys.path.append(os.path.abspath(os.path.join(os.getcwd(), "..")))
 
 from scalaremlp.nn.objax import EquivarianceLayer_objax,compute_scalars,radial_basis_transform
-from ..trainer.hamiltonian_dynamics import IntegratedODETrainer,DoubleSpringPendulum,odeScalars_trial
+from trainer.hamiltonian_dynamics import IntegratedODETrainer,DoubleSpringPendulum,odeScalars_trial
 from torch.utils.data import DataLoader
 from oil.utils.utils import FixedNumpySeed,FixedPytorchSeed
-from ..trainer.utils import LoaderTo
+from trainer.utils import LoaderTo
 from oil.datasetup.datasets import split_dataset
 from oil.tuning.args import argupdated_config
 import logging
 import objax
 
 import itertools
-from ..neuralode_scalars import makeTrainerScalars
+from neuralode_scalars import makeTrainerScalars
 
 
 layer_num_li=[3,5,7]
