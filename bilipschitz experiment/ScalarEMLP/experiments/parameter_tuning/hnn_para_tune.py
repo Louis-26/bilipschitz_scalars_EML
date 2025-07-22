@@ -4,6 +4,7 @@ import sys, os
 #     sys.path.insert(0,os.path.abspath(os.path.join(os.getcwd(), "..")))
 
 print(sys.path)
+print(sys.argv)
 
 from scalaremlp.nn.objax import InvarianceLayer_objax
 # import trainer
@@ -30,6 +31,7 @@ levels = {'critical': logging.CRITICAL, 'error': logging.ERROR,
           'info': logging.INFO, 'debug': logging.DEBUG}
 
 if __name__ == '__main__':
+
     parameter_comb = list(itertools.product(layer_num_li, hidden_layer_num_li, lr_li))
     already_run=[
         (3, 100, 0.01), (3, 100, 5e-3), (3, 100, 3e-3),

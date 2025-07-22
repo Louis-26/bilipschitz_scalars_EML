@@ -1,4 +1,4 @@
-# from scalaremlp.nn import EquivarianceLayer_objax,compute_scalars,radial_basis_transform
+# from scalaremlp.nn.objax import EquivarianceLayer_objax,compute_scalars,radial_basis_transform
 # modification
 from scalaremlp.nn.objax import EquivarianceLayer_objax,compute_scalars,radial_basis_transform
 from trainer.hamiltonian_dynamics import IntegratedODETrainer,DoubleSpringPendulum,odeScalars_trial
