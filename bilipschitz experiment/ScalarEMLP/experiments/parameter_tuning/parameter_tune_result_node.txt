@@ -1,2 +1,8 @@
 NODE scalars parameter tuning results
 ==================================================
+layer number-hidden layer number-learning rate: 3-100-0.01
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.161137-0.168033-0.638058-0.165027
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 3-100-0.005
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.090204-0.093996-0.439949-0.089863
+--------------------------------------------------
