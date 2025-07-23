@@ -3,3 +3,6 @@ cd ScalarEMLP
 pip install -e .
 pip install git+https://github.com/mfinzi/olive-oil-ml
 
+# if want to use GPU
+conda install -n scalar_mlp -c nvidia cudnn=8.9.2.26
+compatible version: jax==0.4.25, optax==0.1.7 chex==0.1.81
