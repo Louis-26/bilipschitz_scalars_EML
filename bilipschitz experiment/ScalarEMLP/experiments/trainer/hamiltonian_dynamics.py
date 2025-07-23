@@ -13,7 +13,7 @@ import numpy as np
 from functools import partial 
 
 from scalaremlp.groups import SO2eR3,O2eR3,DkeR3,Trivial
-from scalaremlp.reps import T,Scalar
+from scalaremlp.reps.representation import T,Scalar
 from .classifier import Regressor,Classifier
 
 ## Code to rollout a Hamiltonian system
@@ -522,7 +522,8 @@ class hnnScalars_trial(object):
             for mb in trainer.dataloaders['test']:
                 trajectories.append(pred_and_gt(trainer.dataloaders['test'].dataset,trainer.model,mb))
             print(f"{cfg['trainer_config']['log_dir']}/{'scalars_HNNs'}_{i}.t")
-            torch.save(np.concatenate(trajectories), f"{cfg['trainer_config']['log_dir']}/{'scalars_HNNs'}_{i}.t")
+            if save:
+                torch.save(np.concatenate(trajectories), f"{cfg['trainer_config']['log_dir']}/{'scalars_HNNs'}_{i}.t")
         except Exception as e:
             if self.strict: raise
             outcome = e

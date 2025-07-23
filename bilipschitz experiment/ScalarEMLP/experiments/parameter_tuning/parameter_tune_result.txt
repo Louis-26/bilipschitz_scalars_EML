@@ -1,0 +1,3 @@
+layer number-hidden layer number-learning rate: 5-100-0.01
+Train_MSE  test_MSE  test_Rollout   val_MSE	: 0.072183-0.075628-0.557361-0.072565
+
