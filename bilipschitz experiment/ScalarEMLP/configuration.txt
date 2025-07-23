@@ -5,4 +5,8 @@ pip install git+https://github.com/mfinzi/olive-oil-ml
 
 # if want to use GPU
 conda install -n scalar_mlp -c nvidia cudnn=8.9.2.26
-compatible version: jax==0.4.25, optax==0.1.7 chex==0.1.81
+compatible version: jax==0.4.27+cuda12.cudnn89, optax==0.1.7 chex==0.1.81
+original version: jax==0.7.0, optax==0.2.5 chex==0.1.90
+
+
+pip install jaxlib==0.7.0+cuda12.cudnn89 -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
