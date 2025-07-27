@@ -45,7 +45,7 @@ if __name__ == '__main__':
         makeTrainerScalars.__kwdefaults__["net_config"]["n_layers"] = layer_num
         makeTrainerScalars.__kwdefaults__["net_config"]["n_hidden"] = hidden_layer_num
         makeTrainerScalars.__kwdefaults__["lr"] = lr
-        makeTrainerScalars.__kwdefaults__["num_epochs"]=1
+        # makeTrainerScalars.__kwdefaults__["num_epochs"]=1
         makeTrainerScalars.__kwdefaults__["save"]=False
         
         # 1, doesn't work
