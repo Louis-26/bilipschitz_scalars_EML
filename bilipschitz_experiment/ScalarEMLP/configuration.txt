@@ -4,9 +4,14 @@ pip install -e .
 pip install git+https://github.com/mfinzi/olive-oil-ml
 
 # if want to use GPU
-jax==0.7.0, jaxlib==0.7.0, optax==0.2.5 chex==0.1.90
 pip install --upgrade "jax[cuda12]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
 
 module list
 module load cuda
 module load cudnn
+
+# run in rockfish
+1. cd data_svillar3/ylu174_file/ScalarEMLP/experiments/parameter_tuning
+2. conda activate Scalar_mlp_gpu
+3. sbatch parameter_tune_hnn_1.slurm
+4. sbatch parameter_tune_node_1.slurm

@@ -60,7 +60,7 @@ if __name__ == '__main__':
             parameter_w="-".join(map(str, parameter))
             f.write(f"layer number-hidden layer number-learning rate: {parameter_w}\n")
             outcome_str = [s.strip() for s in str(outcome).split("\n")]
-            f.write(f"{outcome_str[0]}: {"-".join(outcome_str[1].split()[1:])}\n")
+            f.write(f"{outcome_str[0]}: {'-'.join(outcome_str[1].split()[1:])}\n")
             f.write("-"*50)
             f.write("\n") 
 
