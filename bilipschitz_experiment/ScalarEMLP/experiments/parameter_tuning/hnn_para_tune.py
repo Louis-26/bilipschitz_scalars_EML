@@ -69,7 +69,7 @@ if __name__ == '__main__':
         # kwds = makeTrainerScalars.__kwdefaults__.copy()
         # cfg, outcome = Trial(kwds)
 
-        with open(file="parameter_tune_result.txt", mode="a") as f:
+        with open(file="parameter_tune_result_hnn.txt", mode="a") as f:
             parameter_w = "-".join(map(str, parameter))
             f.write(f"layer number-hidden layer number-learning rate: {parameter_w}\n")
             outcome_str = [s.strip() for s in str(outcome).split("\n")]
