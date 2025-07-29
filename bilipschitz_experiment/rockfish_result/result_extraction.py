@@ -1,3 +1,4 @@
+import os
 from string import Template
 
 def write_table(parameter, metric_hnn, metric_node):
@@ -40,19 +41,27 @@ def write_table(parameter, metric_hnn, metric_node):
 
 
 
-
-with open("../rockfish_result/parameter_tuning/parameter_tune_result.txt", "r") as f:
-    lines = f.readlines()
-    for line in lines:
-        if line.startswith("Train"):
-            line_li=line.split(":")
-            metric=line_li[1].strip().split("-")
-            # print(" & ".join(metric))
+def read_data(f_name):
+    output_dict=dict()
+    file_dir="../rockfish_result/parameter_tuning/"+f_name
+    with open(file_dir, "r") as f:
+        lines = f.readlines()
+        for line in lines:
+            if line.startswith("layer number-hidden layer number-learning rate:"):
+                parameter = line.split(":")[1].strip()
+            if line.startswith("Train"):
+                line_li=line.split(":")
+                metric=line_li[1].strip().split("-")
+                output_dict[parameter]=metric
+    return output_dict
 
 
 if __name__ == '__main__':
-    parameter = "3-100-0.01".split("-")
-    metric_hnn = "0.0001 & 0.0002 & 0.0003 & 0.0004".split(" & ")
-    metric_node = "0.0005 & 0.0006 & 0.0007 & 0.0008".split(" & ")
-    print(parameter, metric_hnn, metric_node)
-    print(write_table(parameter, metric_hnn, metric_node))
+    # parameter = "3-100-0.01".split("-")
+    # metric_hnn = "0.0001 & 0.0002 & 0.0003 & 0.0004".split(" & ")
+    # metric_node = "0.0005 & 0.0006 & 0.0007 & 0.0008".split(" & ")
+    # print(parameter, metric_hnn, metric_node)
+    # print(write_table(parameter, metric_hnn, metric_node))
+    hnn_metric_dict=read_data("parameter_tune_result_hnn.txt")
+    hnn_metric_dict=read_data("parameter_tune_result_node.txt")
+
