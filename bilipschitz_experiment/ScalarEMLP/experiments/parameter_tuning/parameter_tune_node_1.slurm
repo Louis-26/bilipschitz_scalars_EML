@@ -5,8 +5,9 @@
 #SBATCH --account=svillar3_gpu
 #SBATCH --gres=gpu:1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=4
+#SBATCH --cpus-per-task=6
 #SBATCH --time=05:00:00
+#SBATCH --mem-per-cpu=8G
 #SBATCH --output=parameter_tune_node_1.out
 #SBATCH --mail-type=begin,end,fail
 #SBATCH --mail-user=ylu174@jhu.edu
