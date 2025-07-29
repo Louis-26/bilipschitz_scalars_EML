@@ -3,10 +3,10 @@ from string import Template
 
 def write_table(parameter, metric_hnn, metric_node):
     """
-    parameter: a list of (layer_num, hidden_layer_num, learning_rate)
+    parameter: a string of "layer_num-hidden_layer_num-learning_rate"
     metric: a list of metrics in the order of Train MSE, Test MSE, Test Rollout, Validation MSE
     """
-    parameter = "-".join(parameter)
+    # parameter = "-".join(parameter)
     metric_hnn = " & ".join(metric_hnn)
     metric_node = " & ".join(metric_node)
     # Define the template string with $ for variable substitution
@@ -35,12 +35,6 @@ def write_table(parameter, metric_hnn, metric_node):
         metric_node=metric_node
     )
 
-
-
-
-
-
-
 def read_data(f_name):
     output_dict=dict()
     file_dir="../rockfish_result/parameter_tuning/"+f_name
@@ -55,6 +49,20 @@ def read_data(f_name):
                 output_dict[parameter]=metric
     return output_dict
 
+def merge_dict(dict1, dict2):
+    """
+    two dictionaries may share the same keys, but each might have distinctive keys
+    """
+    new_dict=dict()
+    for k,v in dict1.items():
+        if k in dict2.keys():
+            new_dict[k] = (v,dict2[k])
+        else:
+            new_dict[k] = (v,)
+    for k,v in dict2.items():
+        if k not in new_dict.keys():
+            new_dict[k] = (v,)
+    return new_dict
 
 if __name__ == '__main__':
     # parameter = "3-100-0.01".split("-")
@@ -63,5 +71,18 @@ if __name__ == '__main__':
     # print(parameter, metric_hnn, metric_node)
     # print(write_table(parameter, metric_hnn, metric_node))
     hnn_metric_dict=read_data("parameter_tune_result_hnn.txt")
-    hnn_metric_dict=read_data("parameter_tune_result_node.txt")
+    node_metric_dict=read_data("parameter_tune_result_node.txt")
+    merged_dict=merge_dict(hnn_metric_dict,node_metric_dict)
+    output_file_name="result_as_table.txt"
+    with open(output_file_name, "w") as f:
+        pass
+    for k,v in merged_dict.items():
+        if len(v)==1:
+            v=(v[0],["XX"]*4)
+        args=(k,*v)
+        print(args)
+        table_str=write_table(*args)
+        with open(output_file_name, "a") as f:
+            f.write(table_str)
+            f.write("\n")
 
