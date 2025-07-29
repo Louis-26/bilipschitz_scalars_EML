@@ -12,12 +12,5 @@
 #SBATCH --mail-user=ylu174@jhu.edu
 
 module load anaconda3/2024.02-1
-module load cuda
-module load cudnn/9.8.0
 conda activate scalar_mlp
-conda install -y -c nvidia cudnn=9.8.0
-cd ../..
-pip install -e .
-pip install git+https://github.com/mfinzi/olive-oil-ml
-cd experiments/parameter_tuning
 python hnn_para_tune.py

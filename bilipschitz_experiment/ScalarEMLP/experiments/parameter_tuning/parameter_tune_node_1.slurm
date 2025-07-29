@@ -12,8 +12,5 @@
 #SBATCH --mail-user=ylu174@jhu.edu
 
 module load anaconda3/2024.02-1
-module load cuda
 conda activate scalar_mlp
-
-
 python node_para_tune.py
