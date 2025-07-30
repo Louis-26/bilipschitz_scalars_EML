@@ -80,7 +80,7 @@ if __name__ == '__main__':
         if len(v)==1:
             v=(v[0],["XX"]*4)
         args=(k,*v)
-        print(args)
+        # print(args)
         table_str=write_table(*args)
         with open(output_file_name, "a") as f:
             f.write(table_str)
