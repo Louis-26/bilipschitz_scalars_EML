@@ -37,7 +37,7 @@ def write_table(parameter, metric_hnn, metric_node):
 
 def read_data(f_name):
     output_dict=dict()
-    file_dir="../rockfish_result/parameter_tuning/"+f_name
+    file_dir="parameter_tune_no_embedding/"+f_name
     with open(file_dir, "r") as f:
         lines = f.readlines()
         for line in lines:
