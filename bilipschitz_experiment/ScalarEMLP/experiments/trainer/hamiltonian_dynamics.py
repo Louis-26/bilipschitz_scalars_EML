@@ -79,7 +79,8 @@ class HamiltonianDataset(Dataset):
     def __init__(self,n_systems=100,chunk_len=5,dt=0.2,integration_time=30,regen=False):
         super().__init__()
         # root_dir = os.path.expanduser(f"~/datasets/ODEDynamics/{self.__class__}/")
-        root_dir = os.path.expanduser(f"~\\datasets\\ODEDynamics\\{self.__class__.__name__}")
+        # root_dir = os.path.expanduser(f"~\\datasets\\ODEDynamics\\{self.__class__.__name__}")
+        root_dir = os.path.join(os.getcwd(), *f"datasets/ODEDynamics/{self.__class__.__name__}".split("/"))
         filename = os.path.join(root_dir, f"trajectories_{n_systems}_{chunk_len}_{dt}_{integration_time}.pz")
 
         if os.path.exists(filename) and not regen:
