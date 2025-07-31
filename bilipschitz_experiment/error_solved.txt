@@ -1,0 +1,6 @@
+1. RuntimeError: Requested MovieWriter (ffmpeg) not available,
+reason: ffmpeg is not found to visualize data
+sol: download from https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-full.7z
+    add \bin ti=o environment variable PATH
+
+
