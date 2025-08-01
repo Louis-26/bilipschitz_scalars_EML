@@ -1,6 +1,11 @@
 import torch
 import torch.nn as nn
 from oil.utils.utils import export
+
+# import os
+# if not os.getcwd().endswith("trainer"):
+#     os.chdir("../")
+
 from .trainer import Trainer
 import jax
 import jax.numpy as jnp

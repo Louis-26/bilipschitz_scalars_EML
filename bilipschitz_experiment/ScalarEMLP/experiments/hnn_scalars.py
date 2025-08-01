@@ -41,6 +41,7 @@ def makeTrainerScalars(*,dataset=DoubleSpringPendulum,num_epochs=2000,ndata=5000
 
 if __name__ == "__main__":
     Trial = hnnScalars_trial(makeTrainerScalars)
+    makeTrainerScalars.__kwdefaults__["data_config"]['regen'] = True # for test purpose
     makeTrainerScalars.__kwdefaults__['num_epochs'] = 1  # for test purpose
     cfg,outcome = Trial(argupdated_config(makeTrainerScalars.__kwdefaults__))
     # print(outcome)

@@ -14,10 +14,16 @@ from functools import partial
 
 from scalaremlp.groups import SO2eR3,O2eR3,DkeR3,Trivial
 from scalaremlp.reps.representation import T,Scalar
+# if not os.getcwd().endswith("trainer"):
+#     os.chdir("../")
+
 from .classifier import Regressor,Classifier
+
+import types
 
 ## Code to rollout a Hamiltonian system
 
+# divide an array z into two parts with equal size based on the last dimension
 def unpack(z):
     D = jnp.shape(z)[-1]
     assert D % 2 == 0
@@ -25,6 +31,7 @@ def unpack(z):
     q, p_or_v = z[..., :d], z[..., d:]
     return q, p_or_v
 
+# combine two arrays q and p_or_v into one array z based on the last dimension
 def pack(q, p_or_v):
     return jnp.concatenate([q, p_or_v], axis=-1)
 
@@ -109,9 +116,9 @@ class HamiltonianDataset(Dataset):
         n_gen = 0; bs = min(bs, n_systems)
         t_batches, z_batches = [], []
         while n_gen < n_systems:
-            z0s = self.sample_initial_conditions(bs)
-            ts = jnp.arange(0, integration_time, dt)
-            new_zs = BHamiltonianFlow(self.H,z0s, ts)
+            z0s = self.sample_initial_conditions(bs) # initial system status, dimension: (bs, 12)
+            ts = jnp.arange(0, integration_time, dt) # evaluation time sequence, default length: 150(integration_time/dt)
+            new_zs = BHamiltonianFlow(self.H,z0s, ts) # size (bs, traj_len, z_dim), by default 100*150*12
             z_batches.append(new_zs)
             n_gen += bs
         zs = jnp.concatenate(z_batches, axis=0)[:n_systems]
@@ -167,19 +174,26 @@ class DoubleSpringPendulum(HamiltonianDataset):
         self.stats = (0,1,0,1)
     def H(self,z):
         g=1
+        # parameters of balls' masses, springs' stiffness, natural lengths of l1, l2
         m1,m2,k1,k2,l1,l2 = 1,1,1,1,1,1
         x,p = unpack(z)
+        # momentum of balls
         p1,p2 = unpack(p)
+        # positions of balls
         x1,x2 = unpack(x)
-        ke = .5*(p1**2).sum(-1)/m1 + .5*(p2**2).sum(-1)/m2
-        pe = .5*k1*(jnp.sqrt((x1**2).sum(-1))-l1)**2 
+        ke = .5*(p1**2).sum(-1)/m1 + .5*(p2**2).sum(-1)/m2 # kinetic energy
+        pe = .5*k1*(jnp.sqrt((x1**2).sum(-1))-l1)**2 # potential energy
         pe += k2*(jnp.sqrt(((x1-x2)**2).sum(-1))-l2)**2
         pe += m1*g*x1[...,2]+m2*g*x2[...,2]
         return (ke + pe).sum()
     def sample_initial_conditions(self,bs):
+        # initial position of ball 1
         x1 = np.array([0,0,-1.5]) +.2*np.random.randn(bs,3)
+        # initial position of ball 2
         x2= np.array([0,0,-3.]) +.2*np.random.randn(bs,3)
+        # initial momentum of ball 1, 2
         p = .4*np.random.randn(bs,6)
+        # initial status vector
         z0 = np.concatenate([x1,x2,p],axis=-1)
         return z0
     @property
@@ -531,3 +545,6 @@ class hnnScalars_trial(object):
         del trainer
         return cfg, outcome
  
+# print(globals())
+__all__ = [name for name, obj in globals().items()
+           if isinstance(obj, types.FunctionType) and not name.startswith("_")]
