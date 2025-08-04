@@ -183,7 +183,7 @@ class DoubleSpringPendulum(HamiltonianDataset):
         x1,x2 = unpack(x)
         ke = .5*(p1**2).sum(-1)/m1 + .5*(p2**2).sum(-1)/m2 # kinetic energy
         pe = .5*k1*(jnp.sqrt((x1**2).sum(-1))-l1)**2 # potential energy
-        pe += k2*(jnp.sqrt(((x1-x2)**2).sum(-1))-l2)**2
+        pe += .5*k2*(jnp.sqrt(((x1-x2)**2).sum(-1))-l2)**2
         pe += m1*g*x1[...,2]+m2*g*x2[...,2]
         return (ke + pe).sum()
     def sample_initial_conditions(self,bs):
