@@ -1,3 +1,4 @@
 .idea/
 *.pyc
 __pycache__/
+bilipschitz_experiment/ScalarEMLP/scalaremlp.egg-info/
