@@ -1,3 +1,5 @@
+import sys
+
 import jax.numpy as jnp
 import objax.nn as nn
 import objax.functional as F
@@ -84,7 +86,7 @@ def compute_scalars_jax(x: jnp.ndarray, g: jnp.ndarray = jnp.array([0, 0, -1])):
     yy = jnp.concatenate([yy, jnp.sqrt(yy)], axis=-1)  # (n,2)
 
     yx = jnp.einsum('bx,bjx->bj', y, x)  # <q1-q2, u>, u=q1-q0, q2-q0, p1, p2 | (n, 4)
-
+    # all scalars related to the input based on inner products
     scalars = jnp.concatenate([xx, xg, yy, yx], axis=-1)  # (n,30)
     return scalars
 
@@ -165,3 +167,6 @@ class EquivarianceLayer_objax(Module):
 
         output = (output_x + output_y + output_g).reshape(-1, 12)
         return output
+
+# print(sys.modules)
+# print(__all__)
