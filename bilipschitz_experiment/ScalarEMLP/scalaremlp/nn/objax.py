@@ -158,8 +158,8 @@ class EquivarianceLayer_objax(Module):
         scalars = jnp.expand_dims(scalars, axis=-1) - jnp.expand_dims(self.mu, axis=0)  # (n, 30, n_rad)
         scalars = jnp.exp(-self.gamma * scalars ** 2)  # (n, 30, n_rad)
         scalars = scalars.reshape(-1, self.n_in_mlp)  # (n, 30*n_rad)
-        out = jnp.expand_dims(self.mlp(scalars), axis=-1)  # (n, 24, 1)
-
+        # out = jnp.expand_dims(self.mlp(scalars), axis=-1)  # (n, 24, 1)
+        out = jnp.expand_dims(np.array(self.mlp(scalars)), axis=-1)  # (n, 24, 1)
         y = x[:, 0, :] - x[:, 1, :]  # x1-x2 (n,3)
         output_x = out[:, :16].reshape(-1, 4, 4) @ x  # (n,4,3)
         output_y = out[:, 16:20] * jnp.expand_dims(y, 1)  # (n,4,3)
