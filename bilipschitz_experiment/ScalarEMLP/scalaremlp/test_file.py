@@ -1,3 +1,3 @@
-from scalaremlp.nn import compute_scalars
+from scalaremlp.nn.objax import compute_scalars
 
 print(1)

@@ -129,7 +129,7 @@ class InvarianceLayer_objax(Module):
     def H(self, x):
         scalars = compute_scalars_jax(x, self.g)
         out = self.mlp(scalars)
-        return out.sum()
+        return jnp.array(out).sum()
 
     def __call__(self, x: jnp.ndarray):
         x = x.reshape(-1, 4, 3)  # (n,4,3)
@@ -168,5 +168,3 @@ class EquivarianceLayer_objax(Module):
         output = (output_x + output_y + output_g).reshape(-1, 12)
         return output
 
-# print(sys.modules)
-# print(__all__)
