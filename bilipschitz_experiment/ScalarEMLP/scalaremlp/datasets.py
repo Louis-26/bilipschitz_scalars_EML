@@ -13,6 +13,7 @@ from jax import vmap, jit
 from objax import Module
 
 
+# O3equivariant
 @export
 class Inertia(Dataset):
     def __init__(self, N=1024, k=5):
