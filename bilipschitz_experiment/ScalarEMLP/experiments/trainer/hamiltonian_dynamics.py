@@ -211,7 +211,7 @@ class IntegratedDynamicsTrainer(Regressor):
     def loss(self, minibatch):
         """ Standard cross-entropy loss """
         (z0, ts), true_zs = minibatch
-        pred_zs = BHamiltonianFlow(self.model,z0,ts[0])
+        pred_zs = BHamiltonianFlow(self.model,z0,ts[0]) # predict the later trajectory based on current model, given z_0
         return jnp.mean((pred_zs - true_zs)**2)
 
     def metrics(self, loader):

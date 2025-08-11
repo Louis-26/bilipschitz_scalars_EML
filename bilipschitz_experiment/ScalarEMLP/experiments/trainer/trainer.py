@@ -66,6 +66,10 @@ class Trainer(object, metaclass=Named):
             range(start_epoch, start_epoch + num_epochs), desc="train"
         ):
             for i, minibatch in enumerate(self.dataloaders["train"]):
+                # minibatch: ((z_0, t), z_t)
+                # z_0: size (batch_size, n_dim)
+                # t: size (batch_size, chunk_len)
+                # z_t: size (batch_size, chunk_len, n_dim)
                 step = i + self.epoch * steps_per_epoch
                 self.step(self.epoch + i / steps_per_epoch, minibatch)
                 with self.logger as do_log:

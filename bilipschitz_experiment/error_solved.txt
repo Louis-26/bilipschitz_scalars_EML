@@ -1,7 +1,7 @@
 1. RuntimeError: Requested MovieWriter (ffmpeg) not available,
 reason: ffmpeg is not found to visualize data
 sol: download from https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-full.7z
-    add \bin ti=o environment variable PATH
+    add \bin to environment variable PATH
 
 2. TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
   from .autonotebook import tqdm as notebook_tqdm
