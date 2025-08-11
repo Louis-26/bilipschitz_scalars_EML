@@ -17,6 +17,7 @@ def Sequential(*args):
 def radial_basis_transform(x, nrad=100):
     """
     x is a vector
+    nrad: number of radial basis functions
     """
     xmax, xmin = x.max(), x.min()
     gamma = 2 * (xmax - xmin) / (nrad - 1)

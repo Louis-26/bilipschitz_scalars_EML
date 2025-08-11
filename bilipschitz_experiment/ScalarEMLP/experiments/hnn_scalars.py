@@ -26,7 +26,10 @@ def makeTrainerScalars(*,dataset=DoubleSpringPendulum,num_epochs=2000,ndata=5000
     logging.getLogger().setLevel(levels[log_level])
     # Prep the datasets splits, model, and dataloaders
     with FixedNumpySeed(seed),FixedPytorchSeed(seed):
-        base_ds = dataset(n_systems=ndata,**data_config)
+        # full dataset, with sample number 5000, initial evaluation time points number 5, whole integration time 30
+        # initial evaluation time range 1, whole evaluation time range 30, time interval 0.2
+        # n_rad: number of radial basis functions
+        base_ds = dataset(n_systems=ndata,**data_config) # size (5000,5,12) for training data, (5000,150,12) for ground truth
         datasets = split_dataset(base_ds,splits=split)
           
     dataloaders = {k:LoaderTo(DataLoader(v,batch_size=min(bs,len(v)),shuffle=(k=='train'),
