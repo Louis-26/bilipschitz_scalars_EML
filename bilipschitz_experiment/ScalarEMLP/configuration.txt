@@ -1,4 +1,6 @@
-git clone https://github.com/weichiyao/ScalarEMLP.git 
+git clone https://github.com/weichiyao/ScalarEMLP.git
+conda create -n scalar_mlp python=3.13 -y
+conda activate scalar_mlp
 cd ScalarEMLP 
 pip install -e .
 pip install git+https://github.com/mfinzi/olive-oil-ml
