@@ -58,6 +58,7 @@ def BHamiltonianFlow(H,z0,T,tol=1e-4):
     """ Batched version of HamiltonianFlow, essentially equivalent to vmap(HamiltonianFlow),
         z0 of shape (bs,state_dim) and T of shape (t,) yields (bs,t,state_dim) rollouts """
     dynamics = jit(vmap(jit(partial(hamiltonian_dynamics,H)),(0,None)))
+    print(dynamics)
     return odeint(dynamics, z0, T, rtol=tol).transpose((1,0,2))
 
 def BOdeFlow(dynamics,z0,T,tol=1e-4):
