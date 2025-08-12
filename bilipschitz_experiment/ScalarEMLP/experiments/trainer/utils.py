@@ -3,7 +3,7 @@ import functools
 from oil.utils.utils import imap
 import numpy as np
 def minibatch_to(mb):
-    try:
+    try: # mb: ([z0,t], zt)
         if isinstance(mb,np.ndarray):
             return jax.device_put(mb)
         return jax.device_put(mb.numpy())

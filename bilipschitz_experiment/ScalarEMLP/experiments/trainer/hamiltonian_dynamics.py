@@ -212,8 +212,8 @@ class IntegratedDynamicsTrainer(Regressor):
     def loss(self, minibatch):
         """ Standard cross-entropy loss """
         (z0, ts), true_zs = minibatch
-        pred_zs = BHamiltonianFlow(self.model,z0,ts[0]) # predict the later trajectory based on current model, given z_0
-        return jnp.mean((pred_zs - true_zs)**2)
+        pred_zs = BHamiltonianFlow(self.model,z0,ts[0]) # predict the later trajectory(chunk_len) based on current model, given z_0
+        return jnp.mean((pred_zs - true_zs)**2) # compute loss between predicted and ground truth trajectory
 
     def metrics(self, loader):
         mse = lambda mb: np.asarray(self.loss(mb))
@@ -261,8 +261,8 @@ def log_rollout_error(ds,model,minibatch):
         error computed between the dataset ds and HNN model
         on the initial condition in the minibatch."""
     (z0, _), _ = minibatch
-    pred_zs = BHamiltonianFlow(model,z0,ds.T_long)
-    gt_zs  = BHamiltonianFlow(ds.H,z0,ds.T_long)
+    pred_zs = BHamiltonianFlow(model,z0,ds.T_long) # predicted trajectory of the whole integration time
+    gt_zs  = BHamiltonianFlow(ds.H,z0,ds.T_long) # ground truth trajectory of the whole integration time
     errs = vmap(vmap(rel_err))(pred_zs,gt_zs) # (bs,T,)
     clamped_errs = jax.lax.clamp(1e-7,errs,np.inf)
     log_geo_mean = jnp.log(clamped_errs).mean()
