@@ -1,0 +1,11 @@
+h5py
+objax
+pytest
+plum-dispatch
+optax
+tqdm>=4.38
+pytorch-lightning
+lightning
+
+[EXPTS]
+olive-oil-ml>=0.1.1
