@@ -77,7 +77,8 @@ class HamiltonianDataset(Dataset):
         Args:
             n_systems (int): total number of trajectory chunks that makeup the dataset.
             chunk_len (int): the number of timepoints at which each chunk is evaluated
-            dt (float): the spacing of the evaluation points (not the integrator step size which is set by tol=1e-4)
+            dt (float): the spacing of the evaluation points (not the integrator step size which is set by tol=1e-4),
+            short for delta t
             integration_time (float): The integration time for evaluation rollouts and also
                 the total integration time from which each trajectory chunk is randomly sampled
             regen (bool): whether or not to regenerate and overwrite any datasets cached to disk
@@ -89,9 +90,12 @@ class HamiltonianDataset(Dataset):
         # root_dir = os.path.expanduser(f"~/datasets/ODEDynamics/{self.__class__}/")
         # root_dir = os.path.expanduser(f"~\\datasets\\ODEDynamics\\{self.__class__.__name__}")
         root_dir = os.path.join(os.getcwd(), *f"datasets/ODEDynamics/{self.__class__.__name__}".split("/"))
-        filename = os.path.join(root_dir, f"trajectories_{n_systems}_{chunk_len}_{dt}_{integration_time}.pz")
+        # number of systems, chunk length, time step, integration time
+        # filename = os.path.join(root_dir, f"trajectories_{n_systems}_{chunk_len}_{dt}_{integration_time}.pz")
+        filename = os.path.join(root_dir, f"trajectories_{n_systems}_{chunk_len}_{dt}_{integration_time}.pt")
 
         if os.path.exists(filename) and not regen:
+            # it must be weights_only=False, as it is dataset instead of model weights
             Zs = torch.load(filename, weights_only=False)
         else:
             zs = self.generate_trajectory_data(n_systems, dt, integration_time)
