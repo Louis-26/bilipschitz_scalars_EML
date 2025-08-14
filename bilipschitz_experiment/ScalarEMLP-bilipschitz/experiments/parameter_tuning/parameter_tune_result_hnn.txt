@@ -1,0 +1,83 @@
+hnnScalars parameter tuning results
+==================================================
+layer number-hidden layer number-learning rate: 3-100-0.01
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.068065-0.070037-0.55385-0.070105
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 3-100-0.005
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.069483-0.073051-0.461782-0.068312
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 3-100-0.003
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.056678-0.06011-0.32831-0.057789
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 3-150-0.01
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.068868-0.07119-0.527033-0.068431
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 3-150-0.005
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.088931-0.093292-0.612158-0.088587
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 3-150-0.003
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.066977-0.069332-0.505663-0.066378
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 3-200-0.01
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.072457-0.075518-0.59178-0.072353
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 3-200-0.005
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.082337-0.082857-0.56786-0.081982
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 3-200-0.003
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.07032-0.07222-0.446428-0.068938
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 5-100-0.01
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.065514-0.068537-0.290024-0.066124
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 5-100-0.005
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.062191-0.065256-0.386491-0.062472
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 5-100-0.003
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.069697-0.073416-0.297021-0.070133
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 5-150-0.01
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.07903-0.080726-0.526875-0.078305
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 5-150-0.005
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.064566-0.067176-0.453276-0.064676
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 5-150-0.003
+Train_MSE  test_MSE  test_Rollout  val_MSE: 0.067784-0.071129-0.391882-0.06783
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 5-200-0.01
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.048729-0.051154-0.33063-0.049888
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 5-200-0.005
+Train_MSE  test_MSE  test_Rollout  val_MSE: 0.06455-0.067612-0.469758-0.06419
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 5-200-0.003
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.06672-0.07-0.518885-0.066787
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 7-100-0.01
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.069154-0.072176-0.396296-0.068994
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 7-100-0.005
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.068005-0.071257-0.305179-0.067836
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 7-100-0.003
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.072298-0.075446-0.306448-0.072172
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 7-150-0.01
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.068212-0.071314-0.30069-0.068295
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 7-150-0.005
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.068155-0.071451-0.298584-0.068349
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 7-150-0.003
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.065463-0.068595-0.298789-0.065176
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 7-200-0.01
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.068691-0.072196-0.340772-0.068545
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 7-200-0.005
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.071112-0.074211-0.326409-0.071074
+--------------------------------------------------
+layer number-hidden layer number-learning rate: 7-200-0.003
+Train_MSE  test_MSE  test_Rollout   val_MSE: 0.068421-0.071632-0.333462-0.068478
+--------------------------------------------------
