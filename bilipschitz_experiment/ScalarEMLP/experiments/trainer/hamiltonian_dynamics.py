@@ -1,16 +1,18 @@
-import jax 
+from copy import deepcopy
+
+import jax
 from jax import grad, jit, vmap, jacfwd, jvp, vjp, random
 from jax.experimental.ode import odeint
 import jax.numpy as jnp
 import objax
 from oil.tuning.configGenerator import flatten_dict
 from oil.utils.utils import export
- 
+import copy
 import os
-import torch  
+import torch
 from torch.utils.data import Dataset
-import numpy as np 
-from functools import partial 
+import numpy as np
+from functools import partial
 
 from scalaremlp.groups import SO2eR3,O2eR3,DkeR3,Trivial
 from scalaremlp.reps.representation import T,Scalar
@@ -58,7 +60,7 @@ def BHamiltonianFlow(H,z0,T,tol=1e-4):
     """ Batched version of HamiltonianFlow, essentially equivalent to vmap(HamiltonianFlow),
         z0 of shape (bs,state_dim) and T of shape (t,) yields (bs,t,state_dim) rollouts """
     dynamics = jit(vmap(jit(partial(hamiltonian_dynamics,H)),(0,None)))
-    print(dynamics)
+    # print(dynamics)
     return odeint(dynamics, z0, T, rtol=tol).transpose((1,0,2))
 
 def BOdeFlow(dynamics,z0,T,tol=1e-4):
@@ -102,7 +104,7 @@ class HamiltonianDataset(Dataset):
             Zs = np.asarray(self.chunk_training_data(zs, chunk_len))
             os.makedirs(root_dir, exist_ok=True)
             torch.save(Zs, filename)
-        
+
         self.Zs = Zs
         self.T = np.asarray(jnp.arange(0, chunk_len*dt, dt))
         self.T_long = np.asarray(jnp.arange(0,integration_time,dt))
@@ -111,11 +113,13 @@ class HamiltonianDataset(Dataset):
         return self.Zs.shape[0]
 
     def __getitem__(self, i):
-        return (self.Zs[i, 0], self.T), self.Zs[i]
+        # make sure tensors are writable
+        # return (self.Zs[i, 0], self.T), self.Zs[i]
+        return (self.Zs[i, 0].copy(), self.T.copy()), self.Zs[i].copy()
 
     def integrate(self,z0s,ts):
         return HamiltonianFlow(self.H,z0s, ts)
-    
+
     def generate_trajectory_data(self, n_systems, dt, integration_time, bs=100):
         """ Returns ts: (n_systems, traj_len) zs: (n_systems, traj_len, z_dim) """
         n_gen = 0; bs = min(bs, n_systems)
@@ -157,7 +161,7 @@ class HamiltonianDataset(Dataset):
             zt = zt[j]
         xt,pt = unpack(zt)
         xt = xt.reshape((xt.shape[0],-1,3))
-        anim = self.animator(xt)
+        anim = self.animator(xt) # type: ignore
         return anim.animate()
 
 class SHO(HamiltonianDataset):
@@ -168,7 +172,7 @@ class SHO(HamiltonianDataset):
         return ke+pe
     def sample_initial_conditions(self,bs):
         return np.random.randn(bs,2)
-    
+
 class DoubleSpringPendulum(HamiltonianDataset):
     """ The double spring pendulum dataset described in the paper."""
     def __init__(self,*args,**kwargs):
@@ -204,7 +208,7 @@ class DoubleSpringPendulum(HamiltonianDataset):
     @property
     def animator(self):
         return CoupledPendulumAnimation
- 
+
 
 class IntegratedDynamicsTrainer(Regressor):
     """ A trainer for training the Hamiltonian Neural Networks. Feel free to use your own instead."""
@@ -222,13 +226,19 @@ class IntegratedDynamicsTrainer(Regressor):
     def metrics(self, loader):
         mse = lambda mb: np.asarray(self.loss(mb))
         return {"MSE": self.evalAverageMetrics(loader, mse)}
-    
+
     def logStuff(self, step, minibatch=None):
         loader = self.dataloaders['test']
         metrics = {'test_Rollout': np.exp(self.evalAverageMetrics(loader,partial(log_rollout_error,loader.dataset,self.model)))}
-        print(step, metrics)
+        # print(step, metrics)
+        if step==0:
+            print()
+        # print(f"\n step: {step}, metrics: {metrics}")
+
         self.logger.add_scalars('metrics', metrics, step)
         super().logStuff(step,minibatch)
+        if step==0:
+            print("="*50)
 
 class IntegratedODETrainer(Regressor):
     """ A trainer for training the Neural ODEs. Feel free to use your own instead."""
@@ -248,14 +258,18 @@ class IntegratedODETrainer(Regressor):
     def metrics(self, loader):
         mse = lambda mb: np.asarray(self.loss(mb))
         return {"MSE": self.evalAverageMetrics(loader, mse)}
-        
+
     def logStuff(self, step, minibatch=None):
         loader = self.dataloaders['test']
         metrics = {'test_Rollout': np.exp(self.evalAverageMetrics(loader,partial(log_rollout_error_ode,loader.dataset,self.model)))}
-        print(step, metrics)
+        # print(step, metrics)
+        if step==0:
+            print()
         self.logger.add_scalars('metrics', metrics, step)
         super().logStuff(step,minibatch)
-  
+        if step==0:
+            print("="*50)
+
 def rel_err(a,b):
     """ Relative error |a-b|/|a+b|"""
     return jnp.sqrt(((a-b)**2).mean())/(jnp.sqrt((a**2).mean())+jnp.sqrt((b**2).mean()))#
@@ -271,7 +285,7 @@ def log_rollout_error(ds,model,minibatch):
     clamped_errs = jax.lax.clamp(1e-7,errs,np.inf)
     log_geo_mean = jnp.log(clamped_errs).mean()
     return log_geo_mean
-   
+
 
 
 def pred_and_gt(ds,model,minibatch):
@@ -285,7 +299,7 @@ def pred_and_gt_ode(ds,model,minibatch):
     pred_zs = BOdeFlow(model,z0,ds.T_long,tol=2e-6)
     gt_zs  = BHamiltonianFlow(ds.H,z0,ds.T_long,tol=2e-6)
     return np.stack([pred_zs,gt_zs],axis=-1)
- 
+
 def log_rollout_error_ode(ds,model,minibatch):
     """ Computes the log of the geometric mean of the rollout
         error computed between the dataset ds and NeuralODE model
@@ -297,12 +311,12 @@ def log_rollout_error_ode(ds,model,minibatch):
     clamped_errs = jax.lax.clamp(1e-7,errs,np.inf)
     log_geo_mean = jnp.log(clamped_errs).mean()
     return log_geo_mean
- 
 
 
 
 
- 
+
+
 
 
 
@@ -322,8 +336,8 @@ class Animation(object):
         T,n,d = qt.shape
         assert d in (2,3), "too many dimensions for animation"
         self.fig = plt.figure(**figkwargs)
-        self.ax = self.fig.add_axes([0, 0, 1, 1],projection='3d') if d==3 else self.fig.add_axes([0, 0, 1, 1])
-        
+        self.ax = self.fig.add_axes([0, 0, 1, 1],projection='3d') if d==3 else self.fig.add_axes([0, 0, 1, 1]) # type: ignore
+
         #self.ax.axis('equal')
         xyzmin = self.qt.min(0).min(0)#.min(dim=0)[0].min(dim=0)[0]
         xyzmax = self.qt.max(0).max(0)#.max(dim=0)[0].max(dim=0)[0]
@@ -333,7 +347,7 @@ class Animation(object):
             lims = (min(lower),max(upper)),(min(lower),max(upper)),(min(lower),max(upper))
         self.ax.set_xlim(lims[0])
         self.ax.set_ylim(lims[1])
-        if d==3: self.ax.set_zlim(lims[2])
+        if d==3: self.ax.set_zlim(lims[2]) # type: ignore
         if d!=3: self.ax.set_aspect("equal")
         #elf.ax.auto_scale_xyz()
         empty = d*[[]]
@@ -342,7 +356,7 @@ class Animation(object):
             'pts':sum([self.ax.plot(*empty, "o", ms=6,color=self.colors[i]) for i in range(n)], []),
             'traj_lines':sum([self.ax.plot(*empty, "-",color=self.colors[i],lw=traj_lw) for i in range(n)], []),
         }
-        
+
     def init(self):
         empty = 2*[[]]
         for obj in self.objects.values():
@@ -361,9 +375,9 @@ class Animation(object):
             #xyz_chunks = torch.chunk(xyz,chunks)
             #for i,xyz in enumerate(xyz_chunks):
             self.objects['traj_lines'][j].set_data(*xyz[...,:2].T)
-            if d==3: self.objects['traj_lines'][j].set_3d_properties(xyz[...,2].T)
+            if d==3: self.objects['traj_lines'][j].set_3d_properties(xyz[...,2].T) # type: ignore
             self.objects['pts'][j].set_data(*xyz[-1:,...,:2].T)
-            if d==3: self.objects['pts'][j].set_3d_properties(xyz[-1:,...,2].T)
+            if d==3: self.objects['pts'][j].set_3d_properties(xyz[-1:,...,2].T) # type: ignore
         #self.fig.canvas.draw()
         return sum(self.objects.values(),[])
 
@@ -405,22 +419,22 @@ def align2ref(refs,vecs):
     scaled_vecs[:,:,2] *= norm[:,None]#[:,None,None]
     return (M[:,None]@scaled_vecs[...,None]).squeeze(-1)
 
-    
+
 class CoupledPendulumAnimation(PendulumAnimation):
-    
+
     def __init__(self, *args, spring_lw=.6,spring_r=.2,**kwargs):
         super().__init__(*args, **kwargs)
         empty = self.qt.shape[-1]*[[]]
         self.objects["springs"] = self.ax.plot(*empty,c='k',lw=spring_lw)#
         #self.objects["springs"] = sum([self.ax.plot(*empty,c='k',lw=2) for _ in range(self.n-1)],[])
         self.helix = helix(200,radius=spring_r,turns=10)
-        
+
     def update(self,i=0):
         qt_padded = np.concatenate([0*self.qt[i,:1],self.qt[i,:]],axis=0)
         diffs = qt_padded[1:]-qt_padded[:-1]
         x,y,z = (align2ref(diffs,self.helix)+qt_padded[:-1][:,None]).reshape(-1,3).T
         self.objects['springs'][0].set_data(x,y)
-        self.objects['springs'][0].set_3d_properties(z)
+        self.objects['springs'][0].set_3d_properties(z) # type: ignore
         return super().update(i)
 
 from collections.abc import Iterable
@@ -452,7 +466,7 @@ class hnn_trial(object):
         except Exception as e:
             if self.strict: raise
             outcome = e
-        del trainer
+        del trainer # pyright: ignore[reportPossiblyUnboundVariable]
         return cfg, outcome
 
 
@@ -479,13 +493,13 @@ class ode_trial(object):
             trajectories = []
             for mb in trainer.dataloaders['test']:
                 trajectories.append(pred_and_gt_ode(trainer.dataloaders['test'].dataset,trainer.model,mb))
-            torch.save(np.concatenate(trajectories),f"./{cfg['network']}_{cfg['net_config']['group']}_{i}.t") 
+            torch.save(np.concatenate(trajectories),f"./{cfg['network']}_{cfg['net_config']['group']}_{i}.t")
         except Exception as e:
             if self.strict: raise
             outcome = e
-        del trainer
+        del trainer # pyright: ignore[reportPossiblyUnboundVariable]
         return cfg, outcome
-    
+
 @export
 class odeScalars_trial(object):
     """ A training trial for the Neural ODEs, contains lots of boiler plate which is not necessary.
@@ -502,22 +516,25 @@ class odeScalars_trial(object):
             orig_suffix = cfg.setdefault('trainer_config',{}).get('log_suffix','')
             cfg['trainer_config']['log_suffix'] = os.path.join(orig_suffix,f'trial{i}/')
             trainer = self.make_trainer(**cfg)
-            trainer.logger.add_scalars('config',flatten_dict(cfg))
+            cfg_cpy = copy.deepcopy(cfg)
+            cfg_cpy["dataset"] = cfg["dataset"].__name__
+            # trainer.logger.add_scalars('config',flatten_dict(cfg))
+            trainer.logger.add_scalars('config', flatten_dict(cfg_cpy))
             trainer.train(cfg['num_epochs'])
             if save: cfg['saved_at']=trainer.save_checkpoint()
             outcome = trainer.ckpt['outcome']
             trajectories = []
             for mb in trainer.dataloaders['test']:
-                trajectories.append(pred_and_gt_ode(trainer.dataloaders['test'].dataset,trainer.model,mb)) 
+                trajectories.append(pred_and_gt_ode(trainer.dataloaders['test'].dataset,trainer.model,mb))
             if save:
                 torch.save(np.concatenate(trajectories),f"{cfg['trainer_config']['log_dir']}/{'scalars_NODEs'}_{i}.t")
         except Exception as e:
             if self.strict: raise
             outcome = e
-        del trainer
+        del trainer # pyright: ignore[reportPossiblyUnboundVariable] # pyright: ignore[reportPossiblyUnboundVariable]
         return cfg, outcome
-    
-    
+
+
 @export
 class hnnScalars_trial(object):
     """ A training trial for the HNNs, contains lots of boiler plate which is not necessary.
@@ -534,7 +551,11 @@ class hnnScalars_trial(object):
             orig_suffix = cfg.setdefault('trainer_config',{}).get('log_suffix','')
             cfg['trainer_config']['log_suffix'] = os.path.join(orig_suffix,f'trial{i}/')
             trainer = self.make_trainer(**cfg)
-            trainer.logger.add_scalars('config',flatten_dict(cfg))
+            # modify dataset name for visualization
+            cfg_cpy = copy.deepcopy(cfg)
+            cfg_cpy["dataset"]=cfg["dataset"].__name__
+            # trainer.logger.add_scalars('config',flatten_dict(cfg))
+            trainer.logger.add_scalars('config',flatten_dict(cfg_cpy))
             trainer.train(cfg['num_epochs'])
             if save: cfg['saved_at']=trainer.save_checkpoint()
             outcome = trainer.ckpt['outcome']
@@ -547,9 +568,9 @@ class hnnScalars_trial(object):
         except Exception as e:
             if self.strict: raise
             outcome = e
-        del trainer
+        del trainer # pyright: ignore[reportPossiblyUnboundVariable]
         return cfg, outcome
- 
+
 # print(globals())
 __all__ = [name for name, obj in globals().items()
-           if isinstance(obj, types.FunctionType) and not name.startswith("_")]
+           if isinstance(obj, types.FunctionType) and not name.startswith("_")] # pyright: ignore[reportUnsupportedDunderAll]

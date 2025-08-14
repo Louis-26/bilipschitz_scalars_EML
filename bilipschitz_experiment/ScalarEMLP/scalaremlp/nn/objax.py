@@ -6,6 +6,7 @@ import objax.functional as F
 import numpy as np
 from scalaremlp.utils import Named, export
 from objax.module import Module
+import torch
 
 
 def Sequential(*args):
@@ -25,16 +26,31 @@ def radial_basis_transform(x, nrad=100):
     return mu, gamma
 
 
-def comp_inner_products(x, take_sqrt=True):
+# square root of one inner product matrix
+def compute_mat_sqrt(x, i):
+    """
+    take the square root of the inner product given the whole dataset x and index i
+    """
+    U, S, V = torch.linalg.svd(x[i] @ x[i].T)
+    xi_inner = U @ torch.diag(S) @ V
+    xi_inner_sqrt = U @ torch.diag(S).sqrt() @ V
+    assert torch.allclose(torch.matrix_power(xi_inner_sqrt, 2), xi_inner)
+    return xi_inner_sqrt.detach().numpy()
+
+
+def comp_inner_products(x, take_sqrt=True, bilipschitz=False):
     """
     INPUT: batch (q1, q2, p1, p2) = z
     N: number of datasets
-    dim: dimension  
-    x: numpy tensor of size [N, 4, dim] 
+    dim: dimension
+    x: numpy tensor of size [N, 4, dim]
     """
 
     n = x.shape[0]
     scalars = np.einsum('bix,bjx->bij', x, x).reshape(n, -1)  # (n,16)
+    if bilipschitz:
+        sqrt_mat_li = [compute_mat_sqrt(x, i) for i in range(x.shape[0])] # list of size n, each of them is in size (4, 4)
+        scalars=torch.tensor(sqrt_mat_li).flatten(start_dim=1, end_dim=2) # size(n,16)
     if take_sqrt:
         xxsqrt = np.sqrt(np.einsum('bix,bix->bi', x, x))  # (n,4)
         scalars = np.concatenate([xxsqrt, scalars], axis=-1)  # (n,20)
@@ -63,16 +79,17 @@ def comp_inner_products_jax(x: jnp.ndarray, take_sqrt=True, bilipschitz=False):
     """
     INPUT: batch (q1, q2, p1, p2)
     N: number of datasets
-    dim: dimension  
-    x: numpy tensor of size [N, 4, dim] 
+    dim: dimension
+    x: numpy tensor of size [N, 4, dim]
     """
     n = x.shape[0]
     scalars = jnp.einsum('bix,bjx->bij', x, x).reshape(n, -1)  # (n, 16)
+    if bilipschitz:
+        sqrt_mat_li = [compute_mat_sqrt(x, i) for i in range(x.shape[0])]  # list of size n, each of them is in size (4, 4)
+        scalars = torch.tensor(sqrt_mat_li).flatten(start_dim=1, end_dim=2) # size(n,16)
     if take_sqrt:
         xxsqrt = jnp.sqrt(jnp.einsum('bix,bix->bi', x, x))  # (n, 4)
         scalars = jnp.concatenate([xxsqrt, scalars], axis=-1)  # (n, 20)
-    if bilipschitz:
-        pass
     return scalars
 
 
@@ -159,8 +176,8 @@ class EquivarianceLayer_objax(Module):
         scalars = jnp.expand_dims(scalars, axis=-1) - jnp.expand_dims(self.mu, axis=0)  # (n, 30, n_rad)
         scalars = jnp.exp(-self.gamma * scalars ** 2)  # (n, 30, n_rad)
         scalars = scalars.reshape(-1, self.n_in_mlp)  # (n, 30*n_rad)
-        # out = jnp.expand_dims(self.mlp(scalars), axis=-1)  # (n, 24, 1)
-        out = jnp.expand_dims(np.array(self.mlp(scalars)), axis=-1)  # (n, 24, 1)
+        out = jnp.expand_dims(self.mlp(scalars), axis=-1)  # (n, 24, 1)
+        # out = jnp.expand_dims(np.array(self.mlp(scalars)), axis=-1)  # (n, 24, 1)
         y = x[:, 0, :] - x[:, 1, :]  # x1-x2 (n,3)
         output_x = out[:, :16].reshape(-1, 4, 4) @ x  # (n,4,3)
         output_y = out[:, 16:20] * jnp.expand_dims(y, 1)  # (n,4,3)
@@ -168,4 +185,3 @@ class EquivarianceLayer_objax(Module):
 
         output = (output_x + output_y + output_g).reshape(-1, 12)
         return output
-

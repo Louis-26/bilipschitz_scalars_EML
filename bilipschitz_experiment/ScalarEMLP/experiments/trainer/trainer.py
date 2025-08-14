@@ -11,15 +11,15 @@ class Trainer(object, metaclass=Named):
     """Base trainer"""
 
     def __init__(
-        self,
-        model,
-        dataloaders,
-        optim=objax.optimizer.Adam,
-        lr_sched=lambda e: 1,
-        log_dir=None,
-        log_suffix="",
-        log_args={},
-        early_stop_metric=None,
+            self,
+            model,
+            dataloaders,
+            optim=objax.optimizer.Adam,
+            lr_sched=lambda e: 1,
+            log_dir=None,
+            log_suffix="",
+            log_args={},
+            early_stop_metric=None,
     ):
         # Setup model, optimizer, and dataloaders
         self.model = model  #
@@ -63,7 +63,7 @@ class Trainer(object, metaclass=Named):
         steps_per_epoch = len(self.dataloaders["train"])
         step = 0
         for self.epoch in tqdm(
-            range(start_epoch, start_epoch + num_epochs), desc="train"
+                range(start_epoch, start_epoch + num_epochs), desc="train"
         ):
             for i, minibatch in enumerate(self.dataloaders["train"]):
                 # minibatch: ((z_0, t), z_t)
@@ -76,6 +76,8 @@ class Trainer(object, metaclass=Named):
                     if do_log:
                         self.logStuff(step, minibatch)
         self.epoch += 1
+        print("="*50)
+        print("final result:")
         self.logStuff(step)
 
     def step(self, epoch, minibatch):
@@ -97,13 +99,16 @@ class Trainer(object, metaclass=Named):
         # for name,m in self.model.named_modules():
         #     if hasattr(m, 'log_data'):
         #         m.log_data(self.logger,step,name)
+        # modify dataset name
+        # self.logger.constants["config"]["dataset"] = self.dataloaders["train"].dataset.name
         self.logger.report()
+
         # update the best checkpoint
         if self.early_stop_metric is not None:
             maximize = guess_metric_sign(self.early_stop_metric)
             sign = 2 * maximize - 1
             best = (
-                sign * self.logger.scalar_frame[self.early_stop_metric].values
+                    sign * self.logger.scalar_frame[self.early_stop_metric].values
             ).max()
             current = sign * self.logger.scalar_frame[self.early_stop_metric].iloc[-1]
             if current >= best:
