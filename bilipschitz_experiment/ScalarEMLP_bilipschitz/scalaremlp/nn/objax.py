@@ -38,7 +38,7 @@ def compute_mat_sqrt(x, i):
     return xi_inner_sqrt.detach().numpy()
 
 
-def comp_inner_products(x, take_sqrt=True, bilipschitz=False):
+def comp_inner_products(x, take_sqrt=True, bilipschitz=True):
     """
     INPUT: batch (q1, q2, p1, p2) = z
     N: number of datasets
@@ -75,7 +75,7 @@ def compute_scalars(x, g=np.array([0, 0, -1])):
     return scalars
 
 
-def comp_inner_products_jax(x: jnp.ndarray, take_sqrt=True, bilipschitz=False):
+def comp_inner_products_jax(x: jnp.ndarray, take_sqrt=True, bilipschitz=True):
     """
     INPUT: batch (q1, q2, p1, p2)
     N: number of datasets
