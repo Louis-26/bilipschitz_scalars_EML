@@ -3,7 +3,8 @@ import sys, os
 # uncomment these two lines in rockish
 # if os.path.abspath(os.path.join(os.getcwd(), "..")) not in sys.path:
 #     sys.path.insert(0,os.path.abspath(os.path.join(os.getcwd(), "..")))
-
+while not os.getcwd().endswith("ScalarEMLP_bilipschitz"):
+    os.chdir("..")
 # print(sys.path)
 # print(sys.argv)
 
