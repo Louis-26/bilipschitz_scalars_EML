@@ -1,2 +1,0 @@
-NODE scalars parameter tuning results
-==================================================
