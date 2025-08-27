@@ -31,6 +31,7 @@ def compute_mat_sqrt(x, i):
     """
     take the square root of the inner product given the whole dataset x and index i
     """
+    x=torch.tensor(x, dtype=torch.float32)  # ensure x is a torch tensor
     U, S, V = torch.linalg.svd(x[i] @ x[i].T)
     xi_inner = U @ torch.diag(S) @ V
     xi_inner_sqrt = U @ torch.diag(S).sqrt() @ V

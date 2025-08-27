@@ -2,6 +2,9 @@ import sys, os
 # if os.path.abspath(os.path.join(os.getcwd(), "..")) not in sys.path:
 #     sys.path.append(os.path.abspath(os.path.join(os.getcwd(), "..")))
 
+while not os.getcwd().endswith("ScalarEMLP_bilipschitz"):
+    os.chdir("..")
+
 from scalaremlp.nn.objax import EquivarianceLayer_objax,compute_scalars,radial_basis_transform
 from trainer.hamiltonian_dynamics import IntegratedODETrainer,DoubleSpringPendulum,odeScalars_trial
 from torch.utils.data import DataLoader

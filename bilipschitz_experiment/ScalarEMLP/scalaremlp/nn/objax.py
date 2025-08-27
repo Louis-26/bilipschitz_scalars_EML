@@ -37,6 +37,19 @@ def compute_mat_sqrt(x, i):
     assert torch.allclose(torch.matrix_power(xi_inner_sqrt, 2), xi_inner)
     return xi_inner_sqrt.detach().numpy()
 
+def compute_mat_sqrt_jnp(x, i):
+    """
+    take the square root of the inner product given the whole dataset x and index i
+    """
+    x=jnp.array(x)  # ensure x is a jax numpy array
+    # x=torch.tensor(x, dtype=torch.float32)  # ensure x is a torch tensor
+    U, S, V = jnp.linalg.svd(x[i] @ x[i].T, full_matrices=False)
+    xi_inner = U @ jnp.diag(S) @ V
+    xi_inner_sqrt = U @ jnp.diag(jnp.sqrt(S)) @ V
+    # print(torch.matrix_power(xi_inner_sqrt, 2), xi_inner)
+    assert jnp.allclose(jnp.linalg.matrix_power(xi_inner_sqrt, 2), xi_inner)
+    
+    return xi_inner_sqrt
 
 def comp_inner_products(x, take_sqrt=True, bilipschitz=False):
     """
