@@ -8,6 +8,10 @@ pip install git+https://github.com/mfinzi/olive-oil-ml
 # if want to use GPU
 pip install --upgrade "jax[cuda12]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
 
+# check both jax and cuda are working
+python -c "import torch; print(torch.version.cuda)"
+python -c "import jax; print(jax.devices())"
+
 
 module list
 module load cuda
