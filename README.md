@@ -9,7 +9,10 @@ cd ScalarEMLP
 pip install -e .
 pip install git+https://github.com/mfinzi/olive-oil-ml
 
-# if want to use GPU, it must be on a linux machine with NVIDIA GPU to utilize jax cuda version,
+if want to use GPU, it must be on a linux machine with NVIDIA GPU to utilize jax cuda version,
+
+if on windows: need to use WSL to enable cuda support for jax
+
 pip install --upgrade "jax[cuda12]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
 or alternatively,
 pip install --upgrade "jax[cuda12]"
@@ -33,8 +36,6 @@ module load cudnn
 
 pip install --upgrade "jax[cuda12]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
 
-if on windows: need to use WSL to enable cuda support for jax
-
 ## change executable permission
 if on linux: chmod -R +x git_script
 
@@ -48,3 +49,9 @@ https://github.com/mfinzi/olive-oil-ml
 
 Scalar-based multi-layer perceptron models
 https://github.com/weichiyao/ScalarEMLP
+
+## project record
+google slide: 
+
+
+overleaf: 
