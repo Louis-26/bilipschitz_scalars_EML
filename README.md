@@ -2,17 +2,34 @@
 test bilipschitz embedding influence brought to scalar methods of equivariant machine learning models
 
 # configuration setup
-1. git clone https://github.com/weichiyao/ScalarEMLP.git 
+git clone https://github.com/weichiyao/ScalarEMLP.git
+conda create -n scalar_mlp python=3.13 -y
+conda activate scalar_mlp
+cd ScalarEMLP 
+pip install -e .
+pip install git+https://github.com/mfinzi/olive-oil-ml
 
-2. cd ScalarEMLP 
+# if want to use GPU, it must be on a linux machine with NVIDIA GPU to utilize jax cuda version,
+pip install --upgrade "jax[cuda12]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+or alternatively,
+pip install --upgrade "jax[cuda12]"
 
-3. conda create -n scalar_mlp python=3.13
+# check both jax and cuda are working
+python -c "import torch; print(torch.version.cuda)"
+python -c "import jax; print(jax.devices())"
 
-4. conda activate scalar_mlp
 
-5. pip install -e .
 
-6. pip install git+https://github.com/mfinzi/olive-oil-ml
+module list
+module load cuda
+module load cudnn
+
+# run in rockfish
+1. cd data_svillar3/ylu174_file/ScalarEMLP/experiments/parameter_tuning
+2. ml anaconda3/2024.02-1
+3. conda activate scalar_mlp_gpu
+4. sbatch parameter_tune_hnn_1.slurm
+5. sbatch parameter_tune_node_1.slurm
 
 pip install --upgrade "jax[cuda12]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
 
