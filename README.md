@@ -14,3 +14,20 @@ test bilipschitz embedding influence brought to scalar methods of equivariant ma
 
 6. pip install git+https://github.com/mfinzi/olive-oil-ml
 
+pip install --upgrade "jax[cuda12]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+
+if on windows: need to use WSL to enable cuda support for jax
+
+## change executable permission
+if on linux: chmod -R +x git_script
+
+
+## reference projects
+A Practical Method for Constructing Equivariant Multilayer Perceptrons for Arbitrary Matrix Groups:
+https://github.com/mfinzi/equivariant-MLP
+
+Olive-Oil-ML
+https://github.com/mfinzi/olive-oil-ml
+
+Scalar-based multi-layer perceptron models
+https://github.com/weichiyao/ScalarEMLP
