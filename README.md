@@ -1,3 +1,4 @@
+This is where we reproduce the results of the original work.
 # bilipschitz_scalars_EML
 test bilipschitz embedding influence brought to scalar methods of equivariant machine learning models
 

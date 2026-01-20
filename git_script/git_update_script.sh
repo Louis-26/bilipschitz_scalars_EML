@@ -10,8 +10,9 @@ DEFAULT_REPO_URL="https://github.com/Louis-26/git_script_template"
 DEFAULT_FOLDER_NAME="git_script"
 
 read -r -p "Enter the url of the target repo from the github
-(e.g., https://github.com/Louis-26/personal_note): " REPO_URL
-read -p "Enter the folder name from git repo: " FOLDER_NAME
+(e.g., https://github.com/Louis-26/personal_note), by default, 
+it is "https://github.com/Louis-26/git_script_template": " REPO_URL
+read -p "Enter the folder name from git repo, by default, it is git_script: " FOLDER_NAME
 read -p "Enter the branch name (default is main): " BRANCH_NAME
 read -r -p "Enter the directory name of folder to save the downloaded folder locally
 (e.g., C:/Users/USERNAME/Downloads), by default it is $DEFAULT_SAVE_DIR: " SAVE_DIR
@@ -53,3 +54,5 @@ rm -rf download_folder
 rm -rf "$ORIGINAL_DIR/$FOLDER_NAME"
 mv "$SAVE_DIR/$FOLDER_NAME" "$ORIGINAL_DIR"
 echo "Done! The folder '$FOLDER_NAME' has been updated in $ORIGINAL_DIR/$FOLDER_NAME"
+
+
