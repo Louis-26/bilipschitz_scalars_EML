@@ -1,4 +1,5 @@
-# bilipschitz_scalars_EML
+In this branch, bilipschitz embedder is implemented into the experiments.
+# bilipschitz scalars Equivariant MLP
 test bilipschitz embedding influence brought to scalar methods of equivariant machine learning models
 
 # main task
