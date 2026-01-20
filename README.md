@@ -1,7 +1,5 @@
 In this branch, bilipschitz embedder is implemented into the experiments.
 make
-
-123
 # bilipschitz scalars Equivariant MLP
 test bilipschitz embedding influence brought to scalar methods of equivariant machine learning models
 
