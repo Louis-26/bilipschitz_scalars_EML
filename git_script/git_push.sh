@@ -23,4 +23,5 @@ else
     git commit -m "update"
 fi
 
-git push origin main
+branch_name=$(git rev-parse --abbrev-ref HEAD)
+git push origin "$branch_name"
