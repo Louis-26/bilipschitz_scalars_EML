@@ -21,7 +21,7 @@ pip install -e .
 pip install git+https://github.com/mfinzi/olive-oil-ml
 ```
 
-if want to use GPU, it must be on a linux machine with NVIDIA GPU to utilize jax cuda version,
+if you want to use GPU, it must be on a linux machine with NVIDIA GPU to utilize jax cuda version,
 
 if on windows: need to use WSL to enable cuda support for jax
 

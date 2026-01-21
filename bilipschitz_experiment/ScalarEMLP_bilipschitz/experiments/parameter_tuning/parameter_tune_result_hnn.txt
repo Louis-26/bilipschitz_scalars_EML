@@ -1,5 +1,0 @@
-hnnScalars parameter tuning results
-==================================================
-layer number-hidden layer number-learning rate: 3-100-0.01
-Train_MSE  test_MSE  test_Rollout   val_MSE: 0.000006-0.000108-0.004393-0.000012
---------------------------------------------------
