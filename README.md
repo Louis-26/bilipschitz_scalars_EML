@@ -3,15 +3,25 @@ This is where we reproduce the results of the original work.
 test bilipschitz embedding influence brought to scalar methods of equivariant machine learning models
 
 # main task
-1. understand bilipschitz models(replace original inner product matrix by SVD square root) 
+1. understand bilipschitz models(replace original inner product matrix by SVD square root)✅ 
 
-2. adjust bilipschitz model parameters and check performance
+2. tune bilipschitz model hyperparameters and compare performance✅
 
 3. add some noise with controlled amplitude and compare regression results
 
 4. add adversarial attack and compare regression results
 
 # configuration setup
+## Prerequisite
+- NVIDIA GPU
+- CUDA
+
+in HPC, run this and configure the environment
+```bash
+srun -p brtx6 --gres=gpu:1 --time=02:00:00 --pty bash
+```
+
+
 ```bash
 git clone https://github.com/weichiyao/ScalarEMLP.git
 conda create -n scalar_mlp python=3.13 -y
@@ -34,9 +44,14 @@ pip install --upgrade "jax[cuda12]"
 ```
 
 # check both jax and cuda are working
+```bash
 python -c "import torch; print(torch.version.cuda)"
 python -c "import jax; print(jax.devices())"
+```
 
+
+It is supposed to have pytorch version number(e.g., 12.8), 
+and jax device([CudaDevice(id=0)])
 
 
 # run in rockfish
@@ -46,12 +61,7 @@ python -c "import jax; print(jax.devices())"
 4. sbatch parameter_tune_hnn_1.slurm
 5. sbatch parameter_tune_node_1.slurm
 
-```bash
-module list
-module load cuda
-module load cudnn
-pip install --upgrade "jax[cuda12]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
-```
+
 
 ## change executable permission
 if on linux: 

@@ -1,0 +1,65 @@
+
+                     dataset num_epochs ndata  seed n_rad   bs     lr device train  val test chunk_len   dt integration_time  regen n_layers n_hidden log_level         log_dir minPeriod timeFrac log_suffix trial
+config  DoubleSpringPendulum       1000  5000  2021   200  500  0.005   cuda   500  0.1  0.1         5  0.2               30  False        3      100      info  ./hnn_results/      0.02     0.75    trial1/     1
+   test_Rollout   val_MSE  test_MSE  Train_MSE
+0      0.398309  0.074126  0.071883   0.075056
+==================================================
+    test_Rollout  val_MSE  test_MSE  Train_MSE
+61      0.147819   0.0027  0.002437   0.002483
+     test_Rollout  val_MSE  test_MSE  Train_MSE
+108      0.112633  0.00132  0.001283   0.001328
+     test_Rollout   val_MSE  test_MSE  Train_MSE
+152      0.071231  0.000595  0.000608   0.000572
+     test_Rollout   val_MSE  test_MSE  Train_MSE
+190      0.051218  0.000323  0.000365   0.000312
+     test_Rollout   val_MSE  test_MSE  Train_MSE
+229      0.048676  0.000268  0.000296   0.000257
+     test_Rollout   val_MSE  test_MSE  Train_MSE
+267      0.044207  0.000286  0.000321   0.000269
+     test_Rollout   val_MSE  test_MSE  Train_MSE
+304      0.035245  0.000228  0.000259    0.00022
+     test_Rollout   val_MSE  test_MSE  Train_MSE
+341       0.02918  0.000181  0.000213   0.000173
+     test_Rollout   val_MSE  test_MSE  Train_MSE
+378      0.021935  0.000153  0.000179   0.000142
+     test_Rollout   val_MSE  test_MSE  Train_MSE
+415      0.021673  0.000135   0.00015   0.000122
+     test_Rollout   val_MSE  test_MSE  Train_MSE
+451      0.020463  0.000107  0.000123   0.000093
+     test_Rollout   val_MSE  test_MSE  Train_MSE
+487      0.018517  0.000095   0.00011   0.000078
+     test_Rollout   val_MSE  test_MSE  Train_MSE
+523      0.016614  0.000085  0.000105   0.000071
+     test_Rollout   val_MSE  test_MSE  Train_MSE
+558      0.015101  0.000073  0.000088   0.000056
+     test_Rollout   val_MSE  test_MSE  Train_MSE
+593      0.013878  0.000064  0.000075   0.000049
+     test_Rollout   val_MSE  test_MSE  Train_MSE
+627      0.013274  0.000059  0.000067   0.000042
+     test_Rollout   val_MSE  test_MSE  Train_MSE
+657      0.012343  0.000055  0.000064   0.000039
+     test_Rollout   val_MSE  test_MSE  Train_MSE
+691      0.014477  0.000066  0.000076   0.000052
+     test_Rollout  val_MSE  test_MSE  Train_MSE
+725      0.013109  0.00006  0.000069   0.000043
+     test_Rollout   val_MSE  test_MSE  Train_MSE
+759      0.012477  0.000056  0.000066   0.000042
+     test_Rollout  val_MSE  test_MSE  Train_MSE
+793      0.021113  0.00009  0.000106   0.000084
+     test_Rollout   val_MSE  test_MSE  Train_MSE
+826       0.01487  0.000054  0.000074   0.000052
+     test_Rollout   val_MSE  test_MSE  Train_MSE
+860      0.015272  0.000058  0.000078   0.000054
+     test_Rollout   val_MSE  test_MSE  Train_MSE
+893      0.014637  0.000053  0.000069   0.000048
+     test_Rollout   val_MSE  test_MSE  Train_MSE
+927      0.012393  0.000047  0.000059   0.000039
+     test_Rollout   val_MSE  test_MSE  Train_MSE
+960      0.011742  0.000042  0.000054   0.000032
+     test_Rollout   val_MSE  test_MSE  Train_MSE
+993      0.010323  0.000039  0.000049    0.00003
+==================================================
+final result:
+     test_Rollout   val_MSE  test_MSE  Train_MSE
+999      0.011866  0.000045  0.000054   0.000036
+./hnn_results//scalars_HNNs_1.t

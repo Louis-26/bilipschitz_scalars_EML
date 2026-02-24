@@ -3,3 +3,4 @@
 __pycache__/
 bilipschitz_experiment/ScalarEMLP/scalaremlp.egg-info/
 bilipschitz_experiment/.env
+/git_script/
