@@ -1,4 +1,4 @@
-#!/bin/bash
+cd "$(git rev-parse --show-toplevel)"
 
 # use git lfs to remove large files or folders already pushed to remote repository, for main branch
 
@@ -155,8 +155,6 @@ for file in "${FILES_TO_REMOVE[@]}"; do
 	git lfs untrack "$file" 2>/dev/null || true
 	git rm --cached "$file" 2>/dev/null || true
 done
-
-
 
 git add .gitattributes
 git commit -m "Untrack and remove LFS files:  ${FILES_TO_REMOVE[*]}"
@@ -334,7 +332,6 @@ if [ -s "git_lfs_removed_files.txt" ]; then
 	perl -0pi -e 's/\R*\z//g' "git_lfs_removed_files.txt"
 	printf '\n%*s\n' 50 '' | tr ' ' '=' >>"git_lfs_removed_files.txt"
 fi
-
 
 # Append new content
 cat "git_lfs_removed_files_new.txt" >>"git_lfs_removed_files.txt"

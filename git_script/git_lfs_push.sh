@@ -1,9 +1,13 @@
-# use git lfs to push large files or folders to remote repository, for main branch
+cd "$(git rev-parse --show-toplevel)"
+# use git lfs to push large files or folders to remote repository
 
 # this script only pushes those large files, but doesn't push other normal files.
 
 # Uncomment if you need to convert DOS to Unix line endings
 # sed -i 's/\r$//' git_script/git_lfs_push.sh
+
+# find the current branch
+CURRENT_BRANCH=$(git branch --show-current)
 
 # record newly tracked files in "git_lfs_tracked_files_new.txt"
 touch "git_lfs_tracked_files_new.txt"
@@ -24,7 +28,7 @@ scan_and_push_large_files() {
 
 	# Find all files over 100MB and add them to git-lfs tracking
 
-	(find .  -type f -size +104857600c -not -path "./.git/*") | while read -r file; do
+	(find . -type f -size +104857600c -not -path "./.git/*") | while read -r file; do
 		# if the file is in .gitignore, skip it
 		if git check-ignore -q "$file"; then
 			echo "Skipping ignored file: $file"
@@ -149,7 +153,7 @@ elif [ "$INPUT_TYPE" == "files" ]; then
 		git add "$TARGET_PATH"
 	done
 
-	# Commit and push to main branch
+	# Commit and push to the corresponding branch
 	# if the tracked files list is empty, remove the file
 	if [ ! -s "git_lfs_tracked_files_new.txt" ]; then
 		rm -f "git_lfs_tracked_files_new.txt"
@@ -279,4 +283,4 @@ fi
 # final push
 git add ".gitattributes" "git_lfs_tracked_files.txt"
 git commit -m "update"
-git push origin main
+git push origin "$CURRENT_BRANCH"

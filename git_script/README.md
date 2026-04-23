@@ -1,13 +1,15 @@
-Currently, git lfs remove remotely hasn't been verified
-
-search for all >100MB files: 
-
-find . -type f -size +100M
-
-create a large file for testing(102.4MB):
+# Linux Environment 
+If you are in linux and want to use the script, 
+please add:
 ```bash
-fsutil file createnew test_lf_1.txt 107374182 # 102.4 MB
+sed -i 's/\r$//' git_script/*.sh
 ```
+
+
+# lfs test
+
+Currently, git lfs remove remotely has been verified✅
+
 
 # test for lfs push and remove
 ## test 1-remove single file

@@ -1,4 +1,4 @@
-#!/bin/bash
+cd "$(git rev-parse --show-toplevel)"
 # Description: This script is used to download a specific folder from a git repository.
 # Default variables
 DEFAULT_SAVE_DIR="${HOME//\\//}/Downloads"
@@ -7,8 +7,8 @@ DEFAULT_REPO_URL=$(git config --get remote.origin.url)
 read -r -p "Enter the url of the target repo from the github
 (e.g., https://github.com/Louis-26/personal_note), directly enter if the target
 repo is same as the currently repo: " REPO_URL
-read -p "Enter the folder name from git repo: " FOLDER_NAME
-read -p "Enter the branch name (default is main): " BRANCH_NAME
+read -r -p "Enter the folder name from git repo: " FOLDER_NAME
+read -r -p "Enter the branch name (default is main): " BRANCH_NAME
 read -r -p "Enter the directory name of folder to save the downloaded folder locally
 (e.g., C:/Users/USERNAME/Downloads), by default it is $DEFAULT_SAVE_DIR: " SAVE_DIR
 
@@ -22,8 +22,6 @@ cd $SAVE_DIR
 mkdir download_folder
 cd download_folder
 
-
-
 git init
 git remote add origin ${REPO_URL}.git
 git sparse-checkout init --no-cone
@@ -31,7 +29,7 @@ git sparse-checkout set "$FOLDER_NAME"
 git pull $REPO_URL $BRANCH_NAME
 
 # Now clean everything except the target folder inside temp_repo
-shopt -s extglob  # enable extended globbing
+shopt -s extglob # enable extended globbing
 
 # Delete all files and directories except the folder we want
 #rm -rf !("$FOLDER_NAME")
