@@ -1,0 +1,112 @@
+{
+ "args": {
+  "model": "hnn",
+  "bilip": 1,
+  "n_layers": 5,
+  "n_hidden": 300,
+  "lr": 0.05,
+  "act": "softplus",
+  "n_rad": 200,
+  "rbf_gamma_scale": 1.0,
+  "epochs": 2000,
+  "ndata": 5000,
+  "n_train": 500,
+  "bs": 500,
+  "data_seed": 2021,
+  "seed": 0,
+  "train_noise": 0.0,
+  "eval_noise": "0,0.01,0.03,0.1",
+  "out_dir": "/scratch4/enalisn1/ylu174/bilipschitz_scalars_EML/experiment/tune3/hnn_bilip_L5_H300_lr0.05_softplus_noise0_s0"
+ },
+ "final": {
+  "Train_MSE": NaN,
+  "test_MSE": NaN,
+  "test_Rollout": NaN,
+  "val_MSE": NaN
+ },
+ "val_Rollout": NaN,
+ "rollout_vs_ic_noise": {
+  "0.0": NaN,
+  "0.01": NaN,
+  "0.03": NaN,
+  "0.1": NaN
+ },
+ "history": {
+  "Train_MSE": [
+   0.06886263936758041
+  ],
+  "test_MSE": [
+   0.07165218144655228
+  ],
+  "test_Rollout": [
+   0.27534064650535583
+  ],
+  "val_MSE": [
+   0.06885328143835068
+  ]
+ },
+ "history_step": [
+  0,
+  10,
+  47,
+  84,
+  120,
+  152,
+  184,
+  215,
+  256,
+  286,
+  315,
+  345,
+  375,
+  404,
+  432,
+  460,
+  490,
+  521,
+  548,
+  577,
+  606,
+  648,
+  687,
+  728,
+  772,
+  818,
+  869,
+  913,
+  954,
+  995,
+  1031,
+  1067,
+  1104,
+  1138,
+  1174,
+  1210,
+  1244,
+  1278,
+  1318,
+  1353,
+  1386,
+  1422,
+  1456,
+  1490,
+  1522,
+  1555,
+  1590,
+  1630,
+  1665,
+  1700,
+  1737,
+  1776,
+  1818,
+  1861,
+  1902,
+  1942,
+  1981,
+  1999
+ ],
+ "nonfinite": true,
+ "train_seconds": 763.0596704483032,
+ "total_seconds": 784.9929974079132,
+ "device": "cuda:0"
+}

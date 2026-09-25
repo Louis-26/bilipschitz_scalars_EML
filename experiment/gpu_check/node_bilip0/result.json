@@ -1,0 +1,58 @@
+{
+ "args": {
+  "model": "node",
+  "bilip": 0,
+  "n_layers": 3,
+  "n_hidden": 100,
+  "lr": 0.005,
+  "n_rad": 200,
+  "epochs": 50,
+  "ndata": 5000,
+  "n_train": 500,
+  "bs": 500,
+  "data_seed": 2021,
+  "seed": 0,
+  "train_noise": 0.0,
+  "eval_noise": "0,0.01,0.03,0.1",
+  "out_dir": "/scratch4/enalisn1/ylu174/bilipschitz_scalars_EML/experiment/gpu_check/node_bilip0"
+ },
+ "final": {
+  "Train_MSE": 0.0017377483891323209,
+  "test_MSE": 0.0017039807280525565,
+  "test_Rollout": 0.11153768002986908,
+  "val_MSE": 0.001596143119968474
+ },
+ "val_Rollout": 0.1118088886141777,
+ "rollout_vs_ic_noise": {
+  "0.0": 0.11153771728277206,
+  "0.01": 0.11938659846782684,
+  "0.03": 0.12149866670370102,
+  "0.1": 0.1299152672290802
+ },
+ "history": {
+  "Train_MSE": [
+   0.05805991590023041,
+   0.0017377483891323209
+  ],
+  "test_MSE": [
+   0.061236172914505005,
+   0.0017039807280525565
+  ],
+  "test_Rollout": [
+   0.5666661858558655,
+   0.11153768002986908
+  ],
+  "val_MSE": [
+   0.05865299701690674,
+   0.001596143119968474
+  ]
+ },
+ "history_step": [
+  0,
+  49
+ ],
+ "nonfinite": false,
+ "train_seconds": 26.872106075286865,
+ "total_seconds": 37.841222047805786,
+ "device": "cuda:0"
+}

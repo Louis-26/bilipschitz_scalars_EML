@@ -1,0 +1,60 @@
+{
+ "args": {
+  "model": "node",
+  "bilip": 1,
+  "n_layers": 3,
+  "n_hidden": 100,
+  "lr": 0.005,
+  "act": "relu",
+  "n_rad": 200,
+  "rbf_gamma_scale": 2.44,
+  "epochs": 2000,
+  "ndata": 5000,
+  "n_train": 500,
+  "bs": 500,
+  "data_seed": 2021,
+  "seed": 0,
+  "train_noise": 0.0,
+  "eval_noise": "0,0.01,0.03,0.1",
+  "out_dir": "/scratch4/enalisn1/ylu174/bilipschitz_scalars_EML/experiment/probe/node_bilip_L3_H100_lr0.005_g2.44_noise0_s0"
+ },
+ "final": {
+  "Train_MSE": 1.3649507309310138e-05,
+  "test_MSE": 1.7643209503148682e-05,
+  "test_Rollout": 0.010066825896501541,
+  "val_MSE": 2.0390991267049685e-05
+ },
+ "val_Rollout": 0.009889294393360615,
+ "rollout_vs_ic_noise": {
+  "0.0": 0.010066826827824116,
+  "0.01": 0.011874019168317318,
+  "0.03": 0.016509687528014183,
+  "0.1": 0.03844728693366051
+ },
+ "history": {
+  "Train_MSE": [
+   0.169113427400589,
+   1.3649507309310138e-05
+  ],
+  "test_MSE": [
+   0.17604616284370422,
+   1.7643209503148682e-05
+  ],
+  "test_Rollout": [
+   0.732123613357544,
+   0.010066825896501541
+  ],
+  "val_MSE": [
+   0.16777122020721436,
+   2.0390991267049685e-05
+  ]
+ },
+ "history_step": [
+  0,
+  1999
+ ],
+ "nonfinite": false,
+ "train_seconds": 2241.9531762599945,
+ "total_seconds": 2259.367507457733,
+ "device": "cuda:0"
+}

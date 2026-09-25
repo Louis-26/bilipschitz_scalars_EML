@@ -1,0 +1,30 @@
+{
+ "node_inner": {
+  "n_layers": 7,
+  "n_hidden": 200,
+  "lr": 0.02,
+  "act": "relu",
+  "rbf_gamma_scale": 1.0
+ },
+ "hnn_inner": {
+  "n_layers": 3,
+  "n_hidden": 100,
+  "lr": 0.03,
+  "act": "relu",
+  "rbf_gamma_scale": 1.0
+ },
+ "hnn_bilip": {
+  "n_layers": 3,
+  "n_hidden": 200,
+  "lr": 0.02,
+  "act": "silu",
+  "rbf_gamma_scale": 1.0
+ },
+ "node_bilip": {
+  "n_layers": 7,
+  "n_hidden": 200,
+  "lr": 0.005,
+  "act": "relu",
+  "rbf_gamma_scale": 1.0
+ }
+}
